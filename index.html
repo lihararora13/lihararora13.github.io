@@ -3,109 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Find vegan restaurants and cafes near you with HappyCow">
-    <meta name="keywords" content="vegan, vegetarian, restaurants, food, happycow">
-    <meta name="author" content="Vegan Places Finder">
-    
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Vegan Places Finder">
-    <meta property="og:description" content="Discover vegan and vegetarian restaurants worldwide">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="">
-    
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Vegan Places Finder">
-    <meta name="twitter:description" content="Discover vegan and vegetarian restaurants worldwide">
-    
-    <title>Find Vegan Places</title>
-    
-    <!-- Preconnect to external domains for performance -->
-    <link rel="preconnect" href="https://www.happycow.net">
-    <link rel="dns-prefetch" href="https://www.happycow.net">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
-    <!-- Stylesheet -->
+    <title>Vegan Place - Plant-Based Magic</title>
     <link rel="stylesheet" href="styles.css">
-    
-    <!-- Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥬</text></svg>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="app">
-        <div class="widget-container">
-            <!-- HappyCow Widget -->
-            <div class="widget-section">
-                <div class="widget-header">
-                    <h3>Vegan Place</h3>
-                    <p>Interactive map to find vegan places near you</p>
-                </div>
-                <iframe 
-                    src="https://www.happycow.net/widget"
-                    class="happycow-iframe"
-                    title="HappyCow Widget"
-                    frameborder="0"
-                    sandbox="allow-scripts allow-same-origin allow-popups allow-forms">
-                </iframe>
-                <div class="widget-note">
-                    <p><strong>Note:</strong> If the widget doesn't load, it may be due to browser security settings. You can access HappyCow directly using the links below.</p>
-                </div>
-            </div>
-
-            <!-- HappyCow Integration -->
-            <div class="happycow-container">
-                <div class="happycow-content">
-                    <div class="happycow-logo">🐄</div>
-                    <h2 class="happycow-title">Find Vegan Places with HappyCow</h2>
-                    <p class="happycow-description">Discover vegan and vegetarian restaurants, cafes, and health food stores worldwide with HappyCow's comprehensive database.</p>
-                    
-                    <div class="happycow-buttons">
-                        <a href="https://www.happycow.net/veggiemap" target="_blank" rel="noopener noreferrer" class="happycow-button primary">
-                            Open HappyCow Map
-                        </a>
-                        <a href="https://www.happycow.net/mobile" target="_blank" rel="noopener noreferrer" class="happycow-button secondary">
-                            Get Mobile App
-                        </a>
-                    </div>
-                    
-                    <div class="happycow-features">
-                        <div class="feature">
-                            <span class="feature-icon">🍃</span>
-                            <span class="feature-text">240,000+ listings worldwide</span>
-                        </div>
-                        <div class="feature">
-                            <span class="feature-icon">📍</span>
-                            <span class="feature-text">Find places near you</span>
-                        </div>
-                        <div class="feature">
-                            <span class="feature-icon">⭐</span>
-                            <span class="feature-text">Reviews and ratings</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Error state -->
-            <div id="error-state" class="error-state" style="display: none;">
-                <div class="error-content">
-                    <div class="error-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-                            <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2"/>
-                            <line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                    </div>
-                    <h3 class="error-title">Connection issue</h3>
-                    <p class="error-message">Unable to load the restaurant finder. Please check your connection.</p>
-                    <button onclick="retryWidget()" class="retry-button">Try again</button>
-                </div>
-            </div>
-        </div>
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+    <div class="celestial-objects">
+        <div class="moon"></div>
+        <div class="planet planet-1"></div>
+        <div class="planet planet-2"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star star-2"></div>
+        <div class="shooting-star star-3"></div>
+        <div class="black-hole"></div>
+        <div class="small-stars"></div>
+        <div class="nebula"></div>
     </div>
+    
+    <header class="hero">
+        <h1>Vegan Place</h1>
+    </header>
 
-    <!-- JavaScript -->
-    <script src="script.js"></script>
+    <section class="video-section">
+        <video autoplay loop muted playsinline class="centered-video">
+            <source src="assets/vid1.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </section>
+
+    <main>
+        <section class="gallery">
+            <div class="food-card">
+                <div class="food-icon"><i class="fas fa-seedling"></i></div>
+                <h2>Cosmic Salads</h2>
+                <p>Fresh ingredients from mother earth</p>
+            </div>
+            <div class="food-card">
+                <div class="food-icon"><i class="fas fa-moon"></i></div>
+                <h2>Lunar Bowls</h2>
+                <p>Nourishing plant-powered bowls</p>
+            </div>
+            <div class="food-card">
+                <div class="food-icon"><i class="fas fa-star"></i></div>
+                <h2>Star Desserts</h2>
+                <p>Sweet treats from the cosmos</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p class="contact">contact@vegan.place</p>
+    </footer>
 </body>
 </html>
