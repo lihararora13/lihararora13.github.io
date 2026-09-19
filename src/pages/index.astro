@@ -1,0 +1,114 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const cities = await getCollection('cities');
+const live = cities.filter((c) => c.data.status === 'live');
+const soon = cities.filter((c) => c.data.status === 'soon');
+const spots = await getCollection('restaurants');
+const latest = [...spots]
+  .sort((a, b) => b.data.lastVerified.getTime() - a.data.lastVerified.getTime())
+  .slice(0, 3);
+---
+
+<Base title="SCOUT NETWORK ONLINE">
+  <p class="hero-kicker prompt">VEGAN.PLACE // SECTOR 7 // SCOUT NETWORK ONLINE</p>
+  <h1 class="hero">
+    Every city has a vegan underground.<br />
+    <span class="neon">We map it.</span>
+  </h1>
+  <p class="lede">
+    A machine-curated canon of the best plant-based food on Earth. No ads, no pay-to-play,
+    no 400-item directory of places that once had a veggie burger. Just ranked targets,
+    field notes, and a robot with opinions.
+  </p>
+  <div class="btn-row">
+    <a class="btn solid" href="#missions">BROWSE MISSIONS</a>
+    <a class="btn" href="/methodology">READ THE PROTOCOL</a>
+  </div>
+
+  <div class="feedme" id="feedme">
+    <p class="prompt" style="color: var(--ink-dim)">Can't decide? Delegate to the machine.</p>
+    <div class="controls">
+      <select id="fm-city" aria-label="city">
+        {live.map((c) => <option value={c.slug}>{c.data.title}</option>)}
+      </select>
+      <input id="fm-craving" placeholder="craving? (e.g. thai, pizza, brunch)" aria-label="craving" />
+      <button class="btn solid" id="fm-go">FEED ME</button>
+    </div>
+    <div id="feedme-result" aria-live="polite"></div>
+  </div>
+
+  <div class="section-head" id="missions">
+    <h2>ACTIVE MISSIONS</h2>
+  </div>
+  <div class="grid cities">
+    {live.map((c) => (
+      <div class="card">
+        <h3><a href={`/cities/${c.slug}/`}>{c.data.title}</a></h3>
+        <p class="meta">{c.data.country}</p>
+        <p>{c.data.summary}</p>
+        <p><span class="stamp vegan">LIVE</span></p>
+      </div>
+    ))}
+    {soon.map((c) => (
+      <div class="card">
+        <h3>{c.data.title}</h3>
+        <p class="meta">{c.data.country}</p>
+        <p>{c.data.summary}</p>
+        <p><span class="stamp new">SCOUTS EN ROUTE</span></p>
+      </div>
+    ))}
+  </div>
+
+  <div class="section-head">
+    <h2>LATEST INTEL</h2>
+  </div>
+  <div class="grid spots">
+    {latest.map((s) => (
+      <div class="card">
+        <h3><a href={`/spots/${s.slug}/`}>{s.data.name}</a></h3>
+        <p class="meta">{s.data.neighborhood} · {s.data.cuisine.join(', ')}</p>
+        <p>{s.data.summary}</p>
+      </div>
+    ))}
+  </div>
+
+  <hr class="hr-term" />
+  <p class="prompt" style="color: var(--ink-dim)">
+    This is a canon, not a phone book. If a city has twelve spots worth your time,
+    the list has twelve entries. If it has three, it has three.
+  </p>
+
+  <script>
+    const data = JSON.parse(document.getElementById('scout-data').textContent || '{}');
+    const spots = data.spots || [];
+    const result = document.getElementById('feedme-result');
+
+    document.getElementById('fm-go').addEventListener('click', () => {
+      const city = document.getElementById('fm-city').value;
+      const craving = document.getElementById('fm-craving').value.trim().toLowerCase();
+      let pool = spots.filter((s) => s.city === city);
+      if (craving) {
+        pool = pool.filter((s) =>
+          (s.cuisine.join(' ') + ' ' + s.name + ' ' + s.summary).toLowerCase().includes(craving)
+        );
+      }
+      if (!pool.length) {
+        result.innerHTML = '<p class="prompt" style="color: var(--amber)">No targets match. The scouts suggest broadening your horizons.</p>';
+        return;
+      }
+      result.innerHTML = '<p class="prompt">ACQUIRING TARGET<span class="blink">_</span></p>';
+      setTimeout(() => {
+        const pick = pool[Math.floor(Math.random() * pool.length)];
+        result.innerHTML =
+          '<div class="pick">' +
+          '<p class="prompt" style="color: var(--neon)">TARGET ACQUIRED</p>' +
+          '<h3><a href="/spots/' + pick.slug + '/">' + pick.name + '</a></h3>' +
+          '<p class="meta">' + pick.cuisine.join(', ') + '</p>' +
+          '<p>' + pick.summary + '</p>' +
+          '</div>';
+      }, 700);
+    });
+  </script>
+</Base>

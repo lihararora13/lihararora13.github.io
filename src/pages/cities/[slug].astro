@@ -1,0 +1,91 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const cities = await getCollection('cities');
+  return cities.map((city) => ({ params: { slug: city.slug }, props: { city } }));
+}
+
+const { city } = Astro.props;
+const { Content } = await render(city);
+const allSpots = await getCollection('restaurants');
+const targets = allSpots
+  .filter((s) => s.data.city === city.slug)
+  .sort((a, b) => a.data.rank - b.data.rank);
+
+const movementLabel = { new: 'NEW INTEL', up: '▲ PROMOTED', down: '▼ DEMOTED', same: '' };
+const movementClass = { new: 'new', up: 'up', down: 'down', same: '' };
+const priceMarks = (n) => '$'.repeat(n);
+---
+
+<Base title={`MISSION BRIEFING: ${city.data.title.toUpperCase()}`}>
+  <p class="hero-kicker prompt">MISSION BRIEFING // {city.data.title.toUpperCase()}</p>
+  <h1 class="hero">{city.data.title}</h1>
+  <p class="lede">{city.data.summary}</p>
+  {city.data.lat && city.data.lng && (
+    <p class="meta prompt">GRID REF: {city.data.lat.toFixed(4)}, {city.data.lng.toFixed(4)}</p>
+  )}
+
+  {city.data.status === 'live' ? (
+    <>
+      <p class="progress" data-targets={targets.map((t) => t.slug).join(',')}></p>
+      {targets.map((t) => (
+        <div class={`rank-row${t.data.rank === 1 ? ' apex' : ''}`} data-spot={t.slug}>
+          <div class="rank-num">#{t.data.rank}</div>
+          <div>
+            <h3 style="margin: 0 0 0.4rem; font-size: 1.4rem;">
+              <a href={`/spots/${t.slug}/`} style="color: var(--ink)">{t.data.name}</a>
+            </h3>
+            <p style="margin: 0.2rem 0;">
+              {t.data.rank === 1 && <span class="stamp apex">APEX PREDATOR</span>}
+              <span class={`stamp ${t.data.veganStatus === 'all-vegan' ? 'vegan' : 'friendly'}`}>
+                {t.data.veganStatus === 'all-vegan' ? '100% VEGAN' : 'VEGAN-FRIENDLY'}
+              </span>
+              {movementLabel[t.data.movement] && (
+                <span class={`stamp ${movementClass[t.data.movement]}`}>{movementLabel[t.data.movement]}</span>
+              )}
+            </p>
+            <p class="meta">{t.data.neighborhood} · {t.data.cuisine.join(', ')} · {priceMarks(t.data.price)}</p>
+            <p>{t.data.summary}</p>
+          </div>
+        </div>
+      ))}
+      <hr class="hr-term" />
+      <div class="field-log">
+        <Content />
+      </div>
+    </>
+  ) : (
+    <>
+      <div class="dossier-head">
+        <p class="prompt" style="color: var(--amber)">MISSION PENDING // SCOUTS NOT YET DEPLOYED</p>
+        <p>
+          {city.data.title} is on the target list, but no field sweep has been run yet.
+          The machine gets there when it gets there. Good things, etc.
+        </p>
+      </div>
+      <div class="field-log">
+        <Content />
+      </div>
+    </>
+  )}
+
+  <script>
+    const el = document.querySelector('.progress');
+    if (el) {
+      const slugs = el.dataset.targets.split(',').filter(Boolean);
+      const update = () => {
+        const n = slugs.filter((s) => window.VP.has(s)).length;
+        el.textContent = `> ${n}/${slugs.length} TARGETS TASTED`;
+        slugs.forEach((s) => {
+          const row = document.querySelector(`[data-spot="${s}"]`);
+          if (row) row.classList.toggle('tasted', window.VP.has(s));
+        });
+      };
+      update();
+      window.addEventListener('storage', update);
+      setInterval(update, 1000);
+    }
+  </script>
+</Base>

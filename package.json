@@ -1,0 +1,1 @@
+{"dependencies":{"astro":"^7.2.8"},"name":"vegan.place","private":true,"scripts":{"build":"astro build","dev":"astro dev","preview":"astro preview"},"type":"module","version":"1.0.0"}
