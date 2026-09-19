@@ -4,14 +4,18 @@ import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const cities = await getCollection('cities');
-  return cities.map((city) => ({ params: { slug: city.slug }, props: { city } }));
+  return cities.map((city) => ({
+    params: { slug: city.id.replace(/\.mdx?$/, '') },
+    props: { city },
+  }));
 }
 
 const { city } = Astro.props;
 const { Content } = await render(city);
+const citySlug = city.id.replace(/\.mdx?$/, '');
 const allSpots = await getCollection('restaurants');
 const targets = allSpots
-  .filter((s) => s.data.city === city.slug)
+  .filter((s) => s.data.city === citySlug)
   .sort((a, b) => a.data.rank - b.data.rank);
 
 const movementLabel = { new: 'NEW INTEL', up: '▲ PROMOTED', down: '▼ DEMOTED', same: '' };
@@ -29,13 +33,13 @@ const priceMarks = (n) => '$'.repeat(n);
 
   {city.data.status === 'live' ? (
     <>
-      <p class="progress" data-targets={targets.map((t) => t.slug).join(',')}></p>
+      <p class="progress" data-targets={targets.map((t) => t.id.replace(/\.mdx?$/, '')).join(',')}></p>
       {targets.map((t) => (
-        <div class={`rank-row${t.data.rank === 1 ? ' apex' : ''}`} data-spot={t.slug}>
+        <div class={`rank-row${t.data.rank === 1 ? ' apex' : ''}`} data-spot={t.id.replace(/\.mdx?$/, '')}>
           <div class="rank-num">#{t.data.rank}</div>
           <div>
             <h3 style="margin: 0 0 0.4rem; font-size: 1.4rem;">
-              <a href={`/spots/${t.slug}/`} style="color: var(--ink)">{t.data.name}</a>
+              <a href={`/spots/${t.id.replace(/\.mdx?$/, '')}/`} style="color: var(--ink)">{t.data.name}</a>
             </h3>
             <p style="margin: 0.2rem 0;">
               {t.data.rank === 1 && <span class="stamp apex">APEX PREDATOR</span>}

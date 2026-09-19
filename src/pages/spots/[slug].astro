@@ -4,13 +4,16 @@ import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const spots = await getCollection('restaurants');
-  return spots.map((spot) => ({ params: { slug: spot.slug }, props: { spot } }));
+  return spots.map((spot) => ({
+    params: { slug: spot.id.replace(/\.mdx?$/, '') },
+    props: { spot },
+  }));
 }
 
 const { spot } = Astro.props;
 const { Content } = await render(spot);
 const cities = await getCollection('cities');
-const city = cities.find((c) => c.slug === spot.data.city);
+const city = cities.find((c) => c.id.replace(/\.mdx?$/, '') === spot.data.city);
 const priceMarks = (n) => '$'.repeat(n);
 const verified = spot.data.lastVerified.toISOString().slice(0, 10);
 ---
@@ -30,7 +33,7 @@ const verified = spot.data.lastVerified.toISOString().slice(0, 10);
       RANKED #{spot.data.rank} IN <a href={`/cities/${spot.data.city}/`}>{city?.data.title.toUpperCase()}</a>
     </p>
     <div class="btn-row">
-      <button class="btn" id="tasted-btn" data-slug={spot.slug}>MARK AS TASTED</button>
+      <button class="btn" id="tasted-btn" data-slug={spot.id.replace(/\.mdx?$/, '')}>MARK AS TASTED</button>
     </div>
   </div>
 

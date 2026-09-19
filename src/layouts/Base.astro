@@ -11,16 +11,17 @@ const { title, description = 'A machine-curated canon of the best vegan food on 
 
 const spots = await getCollection('restaurants');
 const cities = await getCollection('cities');
+const slugOf = (e) => e.id.replace(/\.mdx?$/, '');
 const scoutData = {
   spots: spots.map((s) => ({
-    slug: s.slug,
+    slug: slugOf(s),
     name: s.data.name,
     city: s.data.city,
     cuisine: s.data.cuisine,
     summary: s.data.summary,
     rank: s.data.rank,
   })),
-  cities: cities.map((c) => ({ slug: c.slug, title: c.data.title, status: c.data.status })),
+  cities: cities.map((c) => ({ slug: slugOf(c), title: c.data.title, status: c.data.status })),
 };
 ---
 

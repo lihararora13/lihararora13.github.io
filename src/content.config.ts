@@ -1,7 +1,9 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
 
 const cities = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.md', base: './src/content/cities' }),
   schema: z.object({
     title: z.string(),
     country: z.string(),
@@ -13,7 +15,7 @@ const cities = defineCollection({
 });
 
 const restaurants = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.md', base: './src/content/restaurants' }),
   schema: z.object({
     name: z.string(),
     city: z.string(),

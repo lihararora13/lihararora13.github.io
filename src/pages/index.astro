@@ -6,6 +6,7 @@ const cities = await getCollection('cities');
 const live = cities.filter((c) => c.data.status === 'live');
 const soon = cities.filter((c) => c.data.status === 'soon');
 const spots = await getCollection('restaurants');
+const slugOf = (e) => e.id.replace(/\.mdx?$/, '');
 const latest = [...spots]
   .sort((a, b) => b.data.lastVerified.getTime() - a.data.lastVerified.getTime())
   .slice(0, 3);
@@ -31,7 +32,7 @@ const latest = [...spots]
     <p class="prompt" style="color: var(--ink-dim)">Can't decide? Delegate to the machine.</p>
     <div class="controls">
       <select id="fm-city" aria-label="city">
-        {live.map((c) => <option value={c.slug}>{c.data.title}</option>)}
+        {live.map((c) => <option value={slugOf(c)}>{c.data.title}</option>)}
       </select>
       <input id="fm-craving" placeholder="craving? (e.g. thai, pizza, brunch)" aria-label="craving" />
       <button class="btn solid" id="fm-go">FEED ME</button>
@@ -45,7 +46,7 @@ const latest = [...spots]
   <div class="grid cities">
     {live.map((c) => (
       <div class="card">
-        <h3><a href={`/cities/${c.slug}/`}>{c.data.title}</a></h3>
+        <h3><a href={`/cities/${slugOf(c)}/`}>{c.data.title}</a></h3>
         <p class="meta">{c.data.country}</p>
         <p>{c.data.summary}</p>
         <p><span class="stamp vegan">LIVE</span></p>
@@ -67,7 +68,7 @@ const latest = [...spots]
   <div class="grid spots">
     {latest.map((s) => (
       <div class="card">
-        <h3><a href={`/spots/${s.slug}/`}>{s.data.name}</a></h3>
+        <h3><a href={`/spots/${slugOf(s)}/`}>{s.data.name}</a></h3>
         <p class="meta">{s.data.neighborhood} · {s.data.cuisine.join(', ')}</p>
         <p>{s.data.summary}</p>
       </div>
