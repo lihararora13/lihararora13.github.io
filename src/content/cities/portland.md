@@ -2,7 +2,7 @@
 title: "Portland"
 country: "United States"
 status: "soon"
-summary: "Keep Portland vegan. The scouts are packing their rain jackets."
+summary: "Keep Portland vegan. We're packing our rain jackets."
 ---
 
-Target locked. Field sweep pending.
+We are still tasting our way through. Check back soon.

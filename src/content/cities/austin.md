@@ -2,7 +2,7 @@
 title: "Austin"
 country: "United States"
 status: "soon"
-summary: "BBQ country with a plant-based streak. Scouts like a challenge."
+summary: "BBQ country with a plant-based streak. We like a challenge."
 ---
 
-Target locked. Field sweep pending.
+We are still tasting our way through. Check back soon.

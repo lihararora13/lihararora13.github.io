@@ -2,7 +2,7 @@
 title: "London"
 country: "United Kingdom"
 status: "soon"
-summary: "Arguably the vegan capital of Europe. The machine has its passport ready."
+summary: "Arguably the vegan capital of Europe. Passport ready."
 ---
 
-Target locked. Field sweep pending.
+We are still tasting our way through. Check back soon.

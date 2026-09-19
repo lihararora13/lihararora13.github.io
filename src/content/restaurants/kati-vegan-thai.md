@@ -21,7 +21,7 @@ sources:
 lastVerified: 2026-09-19
 ---
 
-FIELD LOG 09.19 — Every credible 2026 roundup of Seattle vegan food includes Kati, which
+Why we love it — Every credible 2026 roundup of Seattle vegan food includes Kati, which
 is the closest thing to a peer-reviewed result this industry produces. All-vegan Thai,
 done properly, in a neighborhood better known for tech campuses than dinner plans.
 

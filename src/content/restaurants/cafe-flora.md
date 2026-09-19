@@ -21,9 +21,9 @@ sources:
 lastVerified: 2026-09-19
 ---
 
-FIELD LOG 09.19 — Thirty-five years. Cafe Flora has been doing the vegetarian thing since
-1991, which in restaurant years is roughly forever. It's not fully vegan, and the machine
-notes that without flinching: so much of the menu goes vegan, and goes it this well, that
+Why we love it — Thirty-five years. Cafe Flora has been doing the vegetarian thing since
+1991, which in restaurant years is roughly forever. It's not fully vegan, and we say that
+without flinching: so much of the menu goes vegan, and goes it this well, that
 excluding it would be a paperwork decision, not a taste decision.
 
 Come for brunch. The vegan cinnamon roll is the headline act, the rosemary biscuits with

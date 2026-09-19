@@ -2,7 +2,7 @@
 title: "Chicago"
 country: "United States"
 status: "soon"
-summary: "Deep dish goes dairy-free. Reconnaissance scheduled."
+summary: "Deep dish goes dairy-free. On the list."
 ---
 
-Target locked. Field sweep pending.
+We are still tasting our way through. Check back soon.

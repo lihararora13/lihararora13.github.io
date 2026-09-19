@@ -2,55 +2,59 @@
 import Base from '../layouts/Base.astro';
 ---
 
-<Base title="THE PROTOCOL" description="How vegan.place picks its targets. The curation methodology.">
-  <p class="hero-kicker prompt">DOCUMENT // EYES ONLY // NOT REALLY</p>
-  <h1 class="hero">How the machine <span class="neon">sees.</span></h1>
-  <p class="lede">
-    Every list on this site is produced by the same protocol, run monthly by an AI scout
-    with no advertisers, no affiliate links, and no free dessert bribes. Here is exactly
-    what it does.
-  </p>
+<Base title="How we pick" description="How vegan.place chooses its favorite vegan spots. The method behind the munching.">
+  <div class="hero-wrap">
+    <span class="float-veg" style="top: 20%; right: 10%; animation-delay: 0.5s;" aria-hidden="true">🥦</span>
+    <span class="float-veg" style="bottom: 15%; right: 18%; animation-delay: 2s;" aria-hidden="true">🍓</span>
+    <p class="hero-kicker">🧪 Our method (it's simple)</p>
+    <h1 class="hero">How we pick <span class="hl">the good stuff.</span></h1>
+    <p class="lede">
+      Every list on this site is built the same way: lots of reading, a healthy
+      distrust of hype, and a monthly re-check. No advertisers, no affiliate links,
+      no free-dessert bribes. Here's the whole recipe.
+    </p>
+  </div>
 
-  <div class="section-head"><h2>THE PROTOCOL</h2></div>
+  <div class="section-head"><h2>The recipe 📝</h2></div>
 
   <div class="grid spots">
     <div class="card">
-      <h3><span class="term" style="color: var(--neon)">01 //</span> SWEEP</h3>
-      <p>Each month, the scout runs reconnaissance on every live city: food press, local blogs,
-      Reddit threads, existing best-of rankings. It reads what humans are actually saying,
-      not what marketing departments paid for.</p>
+      <h3>1 · We read everything</h3>
+      <p>Each month we dig through food press, local blogs, Reddit threads, and
+      existing best-of lists for every live city. We read what people are actually
+      saying, not what marketing departments paid for.</p>
     </div>
     <div class="card">
-      <h3><span class="term" style="color: var(--neon)">02 //</span> CONSENSUS</h3>
+      <h3>2 · Consensus required</h3>
       <p>A spot only makes the list if it shows up across multiple independent sources.
-      One glowing blog post is a data point. Five is a pattern. The machine trusts patterns.</p>
+      One glowing blog post is a data point. Five is a pattern. We trust patterns.</p>
     </div>
     <div class="card">
-      <h3><span class="term" style="color: var(--neon)">03 //</span> THE FLOOR</h3>
-      <p>Draft thresholds: a 4.4+ rating with serious review volume for established spots,
-      lower bars for new openings with genuine buzz. Numbers are a filter, not a verdict —
-      the final call is editorial.</p>
+      <h3>3 · Ratings are a filter, not a verdict</h3>
+      <p>Rough bar: 4.4+ stars with serious review volume for established spots, a
+      little slack for new openings with genuine buzz. The final call is editorial —
+      numbers just get you in the door.</p>
     </div>
     <div class="card">
-      <h3><span class="term" style="color: var(--neon)">04 //</span> FIELD LOG</h3>
+      <h3>4 · We write down why</h3>
       <p>Every entry gets a written justification. No silent inclusions, no unexplained
-      rankings. If the machine can't say why a spot matters, the spot doesn't ship.</p>
+      rankings. If we can't say why a spot matters, it doesn't ship.</p>
     </div>
     <div class="card">
-      <h3><span class="term" style="color: var(--neon)">05 //</span> RE-VERIFY</h3>
-      <p>Intel expires. Every entry carries a last-verified date, and stale entries get
-      re-checked or struck. Restaurants close, chefs leave, quality drifts. The list
-      is a living document, not a monument.</p>
+      <h3>5 · We re-check monthly</h3>
+      <p>Taste goes stale. Every entry carries a last-checked date, and old entries get
+      re-verified or cut. Restaurants close, chefs leave, quality drifts. This list is
+      a living thing, not a monument.</p>
     </div>
   </div>
 
-  <div class="section-head"><h2>WHAT THIS IS NOT</h2></div>
+  <div class="section-head"><h2>What this isn't 🚫</h2></div>
   <div class="card">
-    <p class="prompt">Not exhaustive. This is a canon, not a phone book.</p>
-    <p class="prompt">Not paid. Nobody can buy a rank. There is no sales team. There is barely a team.</p>
-    <p class="prompt">Not a map with a green filter. If you want every restaurant with one vegan option, there are directories for that. This is the short list.</p>
+    <p><strong>Not exhaustive.</strong> This is a short list, not a phone book.</p>
+    <p><strong>Not paid.</strong> Nobody can buy a rank. There is no sales team. There is barely a team.</p>
+    <p><strong>Not every place with a veggie burger.</strong> If you want all of those, directories exist. This is the good stuff.</p>
   </div>
 
-  <hr class="hr-term" />
-  <p style="color: var(--ink-dim)">Disagree with a pick? Good. Strong opinions are the point. The scout reconsiders everything monthly.</p>
+  <hr class="divider" />
+  <p style="color: var(--ink-soft); font-weight: 600;">Disagree with a pick? Good. Strong opinions are the point — everything gets reconsidered monthly.</p>
 </Base>

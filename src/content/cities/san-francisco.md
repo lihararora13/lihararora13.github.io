@@ -5,4 +5,4 @@ status: "soon"
 summary: "Fog, hills, and fine dining that happens to be vegan. Awaiting deployment."
 ---
 
-Target locked. Field sweep pending.
+We are still tasting our way through. Check back soon.

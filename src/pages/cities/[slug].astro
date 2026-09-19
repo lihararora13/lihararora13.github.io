@@ -18,70 +18,77 @@ const targets = allSpots
   .filter((s) => s.data.city === citySlug)
   .sort((a, b) => a.data.rank - b.data.rank);
 
-const movementLabel = { new: 'NEW INTEL', up: '▲ PROMOTED', down: '▼ DEMOTED', same: '' };
-const movementClass = { new: 'new', up: 'up', down: 'down', same: '' };
+const movementLabel = { new: 'New!', up: 'Climbing ↑', down: 'Slipping ↓', same: '' };
+const movementClass = { new: 'new', up: 'vegan', down: 'plain', same: '' };
 const priceMarks = (n) => '$'.repeat(n);
 ---
 
-<Base title={`MISSION BRIEFING: ${city.data.title.toUpperCase()}`}>
-  <p class="hero-kicker prompt">MISSION BRIEFING // {city.data.title.toUpperCase()}</p>
+<Base title={`${city.data.title} vegan guide`} description={city.data.summary}>
+  <p class="hero-kicker">🗺️ City guide</p>
   <h1 class="hero">{city.data.title}</h1>
   <p class="lede">{city.data.summary}</p>
-  {city.data.lat && city.data.lng && (
-    <p class="meta prompt">GRID REF: {city.data.lat.toFixed(4)}, {city.data.lng.toFixed(4)}</p>
-  )}
 
   {city.data.status === 'live' ? (
     <>
-      <p class="progress" data-targets={targets.map((t) => t.id.replace(/\.mdx?$/, '')).join(',')}></p>
+      <div class="progress-wrap" data-targets={targets.map((t) => t.id.replace(/\.mdx?$/, '')).join(',')}>
+        <p class="progress-label" id="progress-label"></p>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width: 0%"></div></div>
+      </div>
       {targets.map((t) => (
-        <div class={`rank-row${t.data.rank === 1 ? ' apex' : ''}`} data-spot={t.id.replace(/\.mdx?$/, '')}>
-          <div class="rank-num">#{t.data.rank}</div>
+        <div class={`rank-row${t.data.rank === 1 ? ' top-pick' : ''}`} data-spot={t.id.replace(/\.mdx?$/, '')}>
+          <div class="rank-num">{t.data.rank}</div>
           <div>
-            <h3 style="margin: 0 0 0.4rem; font-size: 1.4rem;">
-              <a href={`/spots/${t.id.replace(/\.mdx?$/, '')}/`} style="color: var(--ink)">{t.data.name}</a>
+            <h3>
+              <a href={`/spots/${t.id.replace(/\.mdx?$/, '')}/`}>{t.data.name}</a>
             </h3>
             <p style="margin: 0.2rem 0;">
-              {t.data.rank === 1 && <span class="stamp apex">APEX PREDATOR</span>}
-              <span class={`stamp ${t.data.veganStatus === 'all-vegan' ? 'vegan' : 'friendly'}`}>
-                {t.data.veganStatus === 'all-vegan' ? '100% VEGAN' : 'VEGAN-FRIENDLY'}
+              {t.data.rank === 1 && <span class="sticker top">👑 Top pick</span>}
+              <span class={`sticker ${t.data.veganStatus === 'all-vegan' ? 'vegan' : 'friendly'}`}>
+                {t.data.veganStatus === 'all-vegan' ? '🌱 100% vegan' : 'Vegan-friendly'}
               </span>
               {movementLabel[t.data.movement] && (
-                <span class={`stamp ${movementClass[t.data.movement]}`}>{movementLabel[t.data.movement]}</span>
+                <span class={`sticker ${movementClass[t.data.movement]}`}>{movementLabel[t.data.movement]}</span>
               )}
             </p>
             <p class="meta">{t.data.neighborhood} · {t.data.cuisine.join(', ')} · {priceMarks(t.data.price)}</p>
-            <p>{t.data.summary}</p>
+            <p class="desc">{t.data.summary}</p>
           </div>
         </div>
       ))}
-      <hr class="hr-term" />
-      <div class="field-log">
+      <hr class="divider" />
+      <div class="section-head"><h2>The lowdown</h2></div>
+      <div class="rundown">
         <Content />
       </div>
     </>
   ) : (
     <>
-      <div class="dossier-head">
-        <p class="prompt" style="color: var(--amber)">MISSION PENDING // SCOUTS NOT YET DEPLOYED</p>
-        <p>
-          {city.data.title} is on the target list, but no field sweep has been run yet.
-          The machine gets there when it gets there. Good things, etc.
-        </p>
+      <div class="note-card" style="margin-top: 1.5rem;">
+        🚧 {city.data.title} is on the list, but we're still tasting our way through it.
+        Good things take time (and many meals).
       </div>
-      <div class="field-log">
+      <div class="section-head"><h2>The lowdown</h2></div>
+      <div class="rundown">
         <Content />
       </div>
     </>
   )}
 
   <script>
-    const el = document.querySelector('.progress');
-    if (el) {
-      const slugs = el.dataset.targets.split(',').filter(Boolean);
+    const wrap = document.querySelector('.progress-wrap');
+    if (wrap) {
+      const slugs = wrap.dataset.targets.split(',').filter(Boolean);
+      const label = document.getElementById('progress-label');
+      const fill = document.getElementById('progress-fill');
       const update = () => {
         const n = slugs.filter((s) => window.VP.has(s)).length;
-        el.textContent = `> ${n}/${slugs.length} TARGETS TASTED`;
+        const pct = slugs.length ? Math.round((n / slugs.length) * 100) : 0;
+        label.textContent = n === 0
+          ? `Tried 0 of ${slugs.length} — your delicious journey awaits 🥬`
+          : n === slugs.length
+            ? `All ${slugs.length} tried. Certified local legend 🏆`
+            : `You've tried ${n} of ${slugs.length} — keep munching 🍽️`;
+        fill.style.width = pct + '%';
         slugs.forEach((s) => {
           const row = document.querySelector(`[data-spot="${s}"]`);
           if (row) row.classList.toggle('tasted', window.VP.has(s));

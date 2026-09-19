@@ -12,36 +12,45 @@ const latest = [...spots]
   .slice(0, 3);
 ---
 
-<Base title="SCOUT NETWORK ONLINE">
-  <p class="hero-kicker prompt">VEGAN.PLACE // SECTOR 7 // SCOUT NETWORK ONLINE</p>
-  <h1 class="hero">
-    Every city has a vegan underground.<br />
-    <span class="neon">We map it.</span>
-  </h1>
-  <p class="lede">
-    A machine-curated canon of the best plant-based food on Earth. No ads, no pay-to-play,
-    no 400-item directory of places that once had a veggie burger. Just ranked targets,
-    field notes, and a robot with opinions.
-  </p>
-  <div class="btn-row">
-    <a class="btn solid" href="#missions">BROWSE MISSIONS</a>
-    <a class="btn" href="/methodology">READ THE PROTOCOL</a>
+<Base title="The best vegan food in every city">
+  <div class="hero-wrap">
+    <span class="float-veg" style="top: 12%; right: 8%; animation-delay: 0s;" aria-hidden="true">🥑</span>
+    <span class="float-veg" style="top: 55%; right: 14%; animation-delay: 1.4s;" aria-hidden="true">🌮</span>
+    <span class="float-veg" style="top: 30%; right: 4%; animation-delay: 2.6s;" aria-hidden="true">🍕</span>
+    <span class="float-veg" style="bottom: 10%; right: 22%; animation-delay: 0.8s;" aria-hidden="true">🥕</span>
+    <p class="hero-kicker">🌱 100% plant-based · zero filler</p>
+    <h1 class="hero">
+      The best <span class="hl">vegan food</span><br />
+      in every city.
+    </h1>
+    <p class="lede">
+      Short lists, strong opinions. We hunt down the plant-based spots actually worth
+      your time, rank them, and re-check them every month. No ads, no pay-to-play,
+      no 400-entry directory of places that once had a veggie burger.
+    </p>
+    <div class="btn-row">
+      <a class="btn solid" href="#cities">Browse cities</a>
+      <a class="btn" href="/methodology">How we pick</a>
+    </div>
   </div>
 
   <div class="feedme" id="feedme">
-    <p class="prompt" style="color: var(--ink-dim)">Can't decide? Delegate to the machine.</p>
+    <span class="sticker">Can't decide?</span>
+    <h2>Hungry and indecisive? Same.</h2>
+    <p style="color: var(--ink-soft); font-weight: 600; margin: 0.4rem 0 0;">Pick a city, name a craving, and let dinner choose you.</p>
     <div class="controls">
       <select id="fm-city" aria-label="city">
         {live.map((c) => <option value={slugOf(c)}>{c.data.title}</option>)}
       </select>
       <input id="fm-craving" placeholder="craving? (e.g. thai, pizza, brunch)" aria-label="craving" />
-      <button class="btn solid" id="fm-go">FEED ME</button>
+      <button class="btn sunny" id="fm-go">Feed me 🍽️</button>
     </div>
     <div id="feedme-result" aria-live="polite"></div>
   </div>
 
-  <div class="section-head" id="missions">
-    <h2>ACTIVE MISSIONS</h2>
+  <div class="section-head" id="cities">
+    <h2>City guides 🗺️</h2>
+    <p class="sub">One live guide, more on the way. Every list is ranked and re-checked monthly.</p>
   </div>
   <div class="grid cities">
     {live.map((c) => (
@@ -49,7 +58,7 @@ const latest = [...spots]
         <h3><a href={`/cities/${slugOf(c)}/`}>{c.data.title}</a></h3>
         <p class="meta">{c.data.country}</p>
         <p>{c.data.summary}</p>
-        <p><span class="stamp vegan">LIVE</span></p>
+        <p><span class="sticker vegan">Live</span></p>
       </div>
     ))}
     {soon.map((c) => (
@@ -57,13 +66,14 @@ const latest = [...spots]
         <h3>{c.data.title}</h3>
         <p class="meta">{c.data.country}</p>
         <p>{c.data.summary}</p>
-        <p><span class="stamp new">SCOUTS EN ROUTE</span></p>
+        <p><span class="sticker plain">Coming soon</span></p>
       </div>
     ))}
   </div>
 
   <div class="section-head">
-    <h2>LATEST INTEL</h2>
+    <h2>Freshly checked ✅</h2>
+    <p class="sub">The most recently verified spots across all cities.</p>
   </div>
   <div class="grid spots">
     {latest.map((s) => (
@@ -75,16 +85,17 @@ const latest = [...spots]
     ))}
   </div>
 
-  <hr class="hr-term" />
-  <p class="prompt" style="color: var(--ink-dim)">
-    This is a canon, not a phone book. If a city has twelve spots worth your time,
-    the list has twelve entries. If it has three, it has three.
-  </p>
+  <hr class="divider" />
+  <div class="note-card">
+    🥬 This is a short list, not a phone book. If a city has twelve spots worth your
+    time, the list has twelve entries. If it has three, it has three.
+  </div>
 
   <script>
-    const data = JSON.parse(document.getElementById('scout-data').textContent || '{}');
+    const data = JSON.parse(document.getElementById('vp-data').textContent || '{}');
     const spots = data.spots || [];
     const result = document.getElementById('feedme-result');
+    const CHEERS = ['Dinner: decided. 🎉', 'The craving gods have spoken. 🙏', 'Excellent choice. Obviously. 😌', 'Your taste buds thank you. 👅'];
 
     document.getElementById('fm-go').addEventListener('click', () => {
       const city = document.getElementById('fm-city').value;
@@ -96,15 +107,16 @@ const latest = [...spots]
         );
       }
       if (!pool.length) {
-        result.innerHTML = '<p class="prompt" style="color: var(--amber)">No targets match. The scouts suggest broadening your horizons.</p>';
+        result.innerHTML = '<p style="font-weight: 700;">Hmm, nothing matches that craving. Broaden your horizons? 🌈</p>';
         return;
       }
-      result.innerHTML = '<p class="prompt">ACQUIRING TARGET<span class="blink">_</span></p>';
+      result.innerHTML = '<p style="font-weight: 700;">Consulting the flavor oracle… 🔮</p>';
       setTimeout(() => {
         const pick = pool[Math.floor(Math.random() * pool.length)];
+        const cheer = CHEERS[Math.floor(Math.random() * CHEERS.length)];
         result.innerHTML =
           '<div class="pick">' +
-          '<p class="prompt" style="color: var(--neon)">TARGET ACQUIRED</p>' +
+          '<p style="font-weight: 800; color: var(--leaf-deep); margin: 0 0 0.4rem;">' + cheer + '</p>' +
           '<h3><a href="/spots/' + pick.slug + '/">' + pick.name + '</a></h3>' +
           '<p class="meta">' + pick.cuisine.join(', ') + '</p>' +
           '<p>' + pick.summary + '</p>' +

@@ -5,4 +5,4 @@ status: "soon"
 summary: "Kebabs, clubs, and more vegan doner than anywhere else on Earth. Inevitable."
 ---
 
-Target locked. Field sweep pending.
+We are still tasting our way through. Check back soon.

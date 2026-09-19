@@ -21,11 +21,11 @@ sources:
 lastVerified: 2026-09-19
 ---
 
-FIELD LOG 09.19 — The numbers made this one easy. 4.8 stars, the highest rating of any
+Why we love it — The numbers made this one easy. 4.8 stars, the highest rating of any
 vegan spot in the city, built over two decades in Little Saigon. This is a tofu deli that
 happens to serve the best banh mi in Seattle, and the fact that it's all vegan feels less
 like a dietary statement and more like a flex.
 
 The buffet is the move if you're hungry and decisive. The banh mi is the move if you want
 to understand why this place has a gravitational pull. Get the Vietnamese coffee either way.
-The machine does not usually feel things, but the lemongrass chick'n registered.
+The lemongrass chick'n alone is worth the trip.

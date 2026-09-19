@@ -18,45 +18,41 @@ const priceMarks = (n) => '$'.repeat(n);
 const verified = spot.data.lastVerified.toISOString().slice(0, 10);
 ---
 
-<Base title={`DOSSIER: ${spot.data.name.toUpperCase()}`} description={spot.data.summary}>
-  <div class="dossier-head">
-    <p class="hero-kicker prompt">TARGET DOSSIER // FILE #{String(spot.data.rank).padStart(3, '0')}</p>
+<Base title={spot.data.name} description={spot.data.summary}>
+  <div class="detail-head">
+    <p class="hero-kicker">😋 Pick #{String(spot.data.rank).padStart(3, '0')} · <a href={`/cities/${spot.data.city}/`}>{city?.data.title}</a></p>
     <h1>{spot.data.name}</h1>
     <p>
-      {spot.data.rank === 1 && <span class="stamp apex">APEX PREDATOR</span>}
-      <span class={`stamp ${spot.data.veganStatus === 'all-vegan' ? 'vegan' : 'friendly'}`}>
-        {spot.data.veganStatus === 'all-vegan' ? '100% VEGAN' : 'VEGAN-FRIENDLY'}
+      {spot.data.rank === 1 && <span class="sticker top">👑 Top pick</span>}
+      <span class={`sticker ${spot.data.veganStatus === 'all-vegan' ? 'vegan' : 'friendly'}`}>
+        {spot.data.veganStatus === 'all-vegan' ? '🌱 100% vegan' : 'Vegan-friendly'}
       </span>
-      <span class="stamp" style="color: var(--ink-dim)">{priceMarks(spot.data.price)}</span>
-    </p>
-    <p class="meta">
-      RANKED #{spot.data.rank} IN <a href={`/cities/${spot.data.city}/`}>{city?.data.title.toUpperCase()}</a>
+      <span class="sticker plain">{priceMarks(spot.data.price)}</span>
     </p>
     <div class="btn-row">
-      <button class="btn" id="tasted-btn" data-slug={spot.id.replace(/\.mdx?$/, '')}>MARK AS TASTED</button>
+      <button class="btn" id="tasted-btn" data-slug={spot.id.replace(/\.mdx?$/, '')}>Been here? Mark it tasty</button>
     </div>
   </div>
 
-  <dl class="intel">
-    <div><dt>CUISINE</dt><dd>{spot.data.cuisine.join(', ')}</dd></div>
-    <div><dt>NEIGHBORHOOD</dt><dd>{spot.data.neighborhood}</dd></div>
-    <div><dt>ADDRESS</dt><dd>{spot.data.address}</dd></div>
-    <div><dt>PRICE</dt><dd>{priceMarks(spot.data.price)} {spot.data.price === 1 ? '(cheap eats)' : spot.data.price === 2 ? '(mid-range)' : '(splurge)'}</dd></div>
-    <div><dt>LAST VERIFIED</dt><dd>{verified}</dd></div>
-    <div><dt>GRID REF</dt><dd>{spot.data.lat.toFixed(4)}, {spot.data.lng.toFixed(4)}</dd></div>
+  <dl class="facts">
+    <div><dt>Cuisine</dt><dd>{spot.data.cuisine.join(', ')}</dd></div>
+    <div><dt>Neighborhood</dt><dd>{spot.data.neighborhood}</dd></div>
+    <div><dt>Address</dt><dd>{spot.data.address}</dd></div>
+    <div><dt>Price</dt><dd>{priceMarks(spot.data.price)} {spot.data.price === 1 ? '(cheap eats)' : spot.data.price === 2 ? '(mid-range)' : '(splurge)'}</dd></div>
+    <div><dt>Last checked</dt><dd>{verified}</dd></div>
   </dl>
 
-  <div class="section-head"><h2>FIELD LOG</h2></div>
-  <div class="field-log">
+  <div class="section-head"><h2>Why we love it 💚</h2></div>
+  <div class="rundown">
     <Content />
   </div>
 
-  <div class="section-head"><h2>WHAT TO ORDER</h2></div>
+  <div class="section-head"><h2>What to order 🍽️</h2></div>
   <ul class="order-list">
     {spot.data.whatToOrder.map((item) => <li>{item}</li>)}
   </ul>
 
-  <div class="section-head"><h2>SOURCES</h2></div>
+  <div class="section-head"><h2>Sources 🔗</h2></div>
   <ul class="sources">
     {spot.data.sources.map((s) => <li><a href={s}>{s}</a></li>)}
   </ul>
@@ -66,7 +62,7 @@ const verified = spot.data.lastVerified.toISOString().slice(0, 10);
     const slug = btn.dataset.slug;
     const paint = () => {
       const has = window.VP.has(slug);
-      btn.textContent = has ? '✓ TASTED — UNDO' : 'MARK AS TASTED';
+      btn.textContent = has ? '✓ Tasty — undo' : 'Been here? Mark it tasty';
       btn.classList.toggle('solid', has);
     };
     btn.addEventListener('click', () => { window.VP.toggle(slug); paint(); });

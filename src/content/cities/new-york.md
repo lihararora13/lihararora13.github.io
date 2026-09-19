@@ -2,7 +2,7 @@
 title: "New York"
 country: "United States"
 status: "soon"
-summary: "The final boss of vegan dining cities. The machine is stretching."
+summary: "The final boss of vegan dining cities. We're stretching."
 ---
 
-Target locked. Field sweep pending.
+We are still tasting our way through. Check back soon.

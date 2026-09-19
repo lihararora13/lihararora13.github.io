@@ -7,12 +7,12 @@ interface Props {
   description?: string;
 }
 
-const { title, description = 'A machine-curated canon of the best vegan food on Earth.' } = Astro.props;
+const { title, description = 'The best vegan food in every city. Short lists, strong opinions, zero filler.' } = Astro.props;
 
 const spots = await getCollection('restaurants');
 const cities = await getCollection('cities');
 const slugOf = (e) => e.id.replace(/\.mdx?$/, '');
-const scoutData = {
+const vpData = {
   spots: spots.map((s) => ({
     slug: slugOf(s),
     name: s.data.name,
@@ -30,25 +30,22 @@ const scoutData = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title} // VEGAN.PLACE</title>
+    <title>{title} · vegan.place</title>
     <meta name="description" content={description} />
-    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
-    <div class="scanlines" aria-hidden="true"></div>
-
-    <header class="hud">
-      <a class="brand" href="/">VEGAN.PLACE<span class="blink">_</span></a>
+    <header class="site-head">
+      <a class="brand" href="/"><span class="leaf">🌱</span> vegan.place</a>
       <nav>
-        <a href="/#missions">MISSIONS</a>
-        <a href="/methodology">PROTOCOL</a>
-        <a href="#" id="open-terminal">TERMINAL</a>
+        <a href="/#cities">Cities</a>
+        <a href="/methodology">How we pick</a>
       </nav>
     </header>
 
@@ -57,24 +54,15 @@ const scoutData = {
     </main>
 
     <footer>
-      <p>VEGAN.PLACE // SECTOR 7 — scouted monthly by Dobby, a machine of taste.</p>
-      <p class="dim">No ads. No pay-to-play. <span class="dim">psst — the konami code opens a terminal.</span></p>
+      <p><strong>🌱 vegan.place</strong> — the best vegan food in every city.</p>
+      <p>No ads. No pay-to-play. Just the good stuff, re-checked monthly.</p>
+      <p style="font-size: 0.8rem; opacity: 0.7;">psst — the konami code makes it rain vegetables.</p>
     </footer>
 
-    <div id="term-overlay" hidden>
-      <div id="term-box">
-        <div id="term-out"></div>
-        <div id="term-line">
-          <span class="ps1">scout@vegan.place:~$</span>
-          <input id="term-in" autocomplete="off" spellcheck="false" aria-label="terminal input" />
-        </div>
-      </div>
-    </div>
-
-    <script type="application/json" id="scout-data" set:html={JSON.stringify(scoutData)} />
+    <script type="application/json" id="vp-data" set:html={JSON.stringify(vpData)} />
 
     <script>
-      // ---- tasted tracker (localStorage, no accounts) ----
+      // ---- tried-it tracker (localStorage, no accounts) ----
       window.VP = {
         key: 'vp-tasted-v1',
         get() {
@@ -91,86 +79,26 @@ const scoutData = {
         },
       };
 
-      // ---- terminal ----
-      const overlay = document.getElementById('term-overlay');
-      const out = document.getElementById('term-out');
-      const input = document.getElementById('term-in');
-      const data = JSON.parse(document.getElementById('scout-data').textContent || '{}');
-      const spots = data.spots || [];
-      const cities = data.cities || [];
-
-      function print(html, cls) {
-        const div = document.createElement('div');
-        if (cls) div.className = cls;
-        div.innerHTML = html;
-        out.appendChild(div);
-        overlay.scrollTop = overlay.scrollHeight;
-      }
-
-      function boot() {
-        out.innerHTML = '';
-        print('VEGAN.PLACE SCOUT TERMINAL v1.0', 'ok');
-        print('Connected to the plant-based reconnaissance grid.');
-        print('Type <span class="ok">help</span> for commands. <span class="warn">exit</span> or ESC to close.');
-        print('');
-      }
-
-      function run(cmd) {
-        print('<span class="ok">scout@vegan.place:~$</span> ' + cmd.replace(/</g, '&lt;'));
-        const [verb, ...rest] = cmd.trim().toLowerCase().split(/\s+/);
-        const arg = rest.join(' ');
-        if (!verb) return;
-        if (verb === 'help') {
-          print('  cities              — list all missions');
-          print('  list &lt;city&gt;        — show targets in a city');
-          print('  feed me [cuisine]   — acquire one random target');
-          print('  whoami              — identify yourself');
-          print('  clear               — wipe the screen');
-        } else if (verb === 'cities') {
-          cities.forEach((c) => print(`  ${c.status === 'live' ? '<span class="ok">[LIVE]</span>' : '<span class="warn">[SOON]</span>'} ${c.title}  (${c.slug})`));
-        } else if (verb === 'list') {
-          const city = cities.find((c) => c.slug === arg || c.title.toLowerCase() === arg);
-          if (!city) { print(`  unknown mission: ${arg}`, 'warn'); return; }
-          if (city.status !== 'live') { print(`  ${city.title}: mission pending. scouts not yet deployed.`, 'warn'); return; }
-          spots.filter((s) => s.city === city.slug).sort((a, b) => a.rank - b.rank)
-            .forEach((s) => print(`  <span class="ok">#${s.rank}</span> ${s.name} — ${s.cuisine.join(', ')}`));
-        } else if (verb === 'feed' && rest[0] === 'me') {
-          const cuisine = rest.slice(1).join(' ');
-          let pool = spots;
-          if (cuisine) pool = pool.filter((s) => s.cuisine.join(' ').toLowerCase().includes(cuisine));
-          if (!pool.length) { print('  no targets match that craving. broaden your horizons.', 'warn'); return; }
-          const pick = pool[Math.floor(Math.random() * pool.length)];
-          print(`  TARGET ACQUIRED: <span class="ok">${pick.name}</span>`, 'ok');
-          print(`  ${pick.summary}`);
-          print(`  dossier: /spots/${pick.slug}/`);
-        } else if (verb === 'whoami') {
-          print('  a hungry human with excellent judgment.');
-        } else if (verb === 'clear') {
-          out.innerHTML = '';
-        } else if (verb === 'exit') {
-          close();
-        } else {
-          print(`  command not recognized: ${verb}. try <span class="ok">help</span>.`, 'warn');
+      // ---- veggie rain (konami code easter egg) ----
+      const VEGGIES = ['🥑','🥦','🌮','🍕','🥕','🍄','🥬','🍓','🫘','🌽','🍋','🥥'];
+      function veggieRain() {
+        for (let i = 0; i < 70; i++) {
+          const s = document.createElement('span');
+          s.className = 'veg-drop';
+          s.textContent = VEGGIES[Math.floor(Math.random() * VEGGIES.length)];
+          s.style.left = Math.random() * 100 + 'vw';
+          s.style.fontSize = (1.4 + Math.random() * 2.2) + 'rem';
+          s.style.animationDuration = (2.2 + Math.random() * 2.4) + 's';
+          s.style.animationDelay = (Math.random() * 1.2) + 's';
+          document.body.appendChild(s);
+          setTimeout(() => s.remove(), 6000);
         }
-        print('');
       }
-
-      function open() { overlay.hidden = false; boot(); setTimeout(() => input.focus(), 50); }
-      function close() { overlay.hidden = true; input.value = ''; }
-
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') { run(input.value); input.value = ''; }
-        if (e.key === 'Escape') close();
-      });
-      document.getElementById('open-terminal').addEventListener('click', (e) => { e.preventDefault(); open(); });
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !overlay.hidden) close(); });
-
-      // konami code
       const seq = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
       let pos = 0;
       document.addEventListener('keydown', (e) => {
         pos = (e.key === seq[pos]) ? pos + 1 : (e.key === seq[0] ? 1 : 0);
-        if (pos === seq.length) { pos = 0; open(); }
+        if (pos === seq.length) { pos = 0; veggieRain(); }
       });
     </script>
   </body>
