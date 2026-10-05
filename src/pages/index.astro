@@ -50,26 +50,64 @@ const latest = [...spots]
 
   <div class="section-head" id="cities">
     <h2>City guides 🗺️</h2>
-    <p class="sub">One live guide, more on the way. Every list is ranked and re-checked monthly.</p>
+    <p class="sub">{live.length} ranked guides and counting. Every list is re-checked monthly.</p>
   </div>
-  <div class="grid cities">
-    {live.map((c) => (
-      <div class="card">
-        <h3><a href={`/cities/${slugOf(c)}/`}>{c.data.title}</a></h3>
-        <p class="meta">{c.data.country}</p>
-        <p>{c.data.summary}</p>
-        <p><span class="sticker vegan">Live</span></p>
-      </div>
-    ))}
-    {soon.map((c) => (
-      <div class="card">
-        <h3>{c.data.title}</h3>
-        <p class="meta">{c.data.country}</p>
-        <p>{c.data.summary}</p>
-        <p><span class="sticker plain">Coming soon</span></p>
-      </div>
-    ))}
+  <div class="city-tools">
+    <input id="city-search" type="search" placeholder="Search cities… (e.g. paris, texas)" aria-label="Search cities" />
+    <div class="region-chips" role="group" aria-label="Filter by region">
+      <button class="chip active" data-region="all">All</button>
+      <button class="chip" data-region="North America">North America</button>
+      <button class="chip" data-region="Europe">Europe</button>
+      <button class="chip" data-region="Asia-Pacific">Asia-Pacific</button>
+    </div>
   </div>
+  {
+    (() => {
+      const regionOf = (country) =>
+        ['United States', 'Canada'].includes(country)
+          ? 'North America'
+          : ['United Kingdom', 'Germany', 'France', 'Netherlands', 'Spain'].includes(country)
+            ? 'Europe'
+            : 'Asia-Pacific';
+      return (
+        <div class="grid cities" id="city-grid">
+          {live.map((c) => {
+            const region = regionOf(c.data.country);
+            return (
+              <div
+                class="card city-card"
+                data-name={c.data.title.toLowerCase()}
+                data-country={c.data.country.toLowerCase()}
+                data-region={region}
+              >
+                <h3><a href={`/cities/${slugOf(c)}/`}>{c.data.title}</a></h3>
+                <p class="meta">{c.data.country} · {region}</p>
+                <p>{c.data.summary}</p>
+                <p><span class="sticker vegan">Live</span></p>
+              </div>
+            );
+          })}
+          {soon.map((c) => {
+            const region = regionOf(c.data.country);
+            return (
+              <div
+                class="card city-card"
+                data-name={c.data.title.toLowerCase()}
+                data-country={c.data.country.toLowerCase()}
+                data-region={region}
+              >
+                <h3>{c.data.title}</h3>
+                <p class="meta">{c.data.country} · {region}</p>
+                <p>{c.data.summary}</p>
+                <p><span class="sticker plain">Coming soon</span></p>
+              </div>
+            );
+          })}
+        </div>
+      );
+    })()
+  }
+  <p class="no-results" id="city-no-results" hidden>No city matches that search. Try another craving? 🌍</p>
 
   <div class="section-head">
     <h2>Freshly checked ✅</h2>
@@ -92,6 +130,7 @@ const latest = [...spots]
   </div>
 
   <script>
+    // Feed me randomizer
     const data = JSON.parse(document.getElementById('vp-data').textContent || '{}');
     const spots = data.spots || [];
     const result = document.getElementById('feedme-result');
@@ -122,6 +161,36 @@ const latest = [...spots]
           '<p>' + pick.summary + '</p>' +
           '</div>';
       }, 700);
+    });
+
+    // City finder: search + region filter
+    const citySearch = document.getElementById('city-search');
+    const cityGrid = document.getElementById('city-grid');
+    const cityCards = cityGrid ? Array.from(cityGrid.querySelectorAll('.city-card')) : [];
+    const cityNoResults = document.getElementById('city-no-results');
+    let activeRegion = 'all';
+
+    function applyCityFilter() {
+      const q = (citySearch.value || '').trim().toLowerCase();
+      let shown = 0;
+      cityCards.forEach((card) => {
+        const hay = card.dataset.name + ' ' + card.dataset.country;
+        const regionOk = activeRegion === 'all' || card.dataset.region === activeRegion;
+        const ok = regionOk && (!q || hay.includes(q));
+        card.style.display = ok ? '' : 'none';
+        if (ok) shown++;
+      });
+      if (cityNoResults) cityNoResults.hidden = shown > 0;
+    }
+
+    if (citySearch) citySearch.addEventListener('input', applyCityFilter);
+    document.querySelectorAll('.region-chips .chip').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.region-chips .chip').forEach((c) => c.classList.remove('active'));
+        chip.classList.add('active');
+        activeRegion = chip.dataset.region;
+        applyCityFilter();
+      });
     });
   </script>
 </Base>

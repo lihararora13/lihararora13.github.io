@@ -199,6 +199,25 @@ h1.hero .hl { background: linear-gradient(transparent 62%, var(--sun) 62%, var(-
 .veg-drop { position: fixed; top: -8vh; z-index: 10000; pointer-events: none; animation: vegfall linear forwards; }
 @keyframes vegfall { to { transform: translateY(115vh) rotate(340deg); } }
 
+/* city finder: search + region filters */
+.city-tools { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; margin: 0 0 1.4rem; }
+#city-search {
+  font: inherit; font-weight: 600; color: var(--ink);
+  background: #fff; border: 2px solid var(--ink); border-radius: var(--radius);
+  padding: 0.6rem 1rem; min-width: 240px; flex: 1 1 240px; max-width: 340px;
+}
+#city-search::placeholder { color: var(--ink-soft); }
+.region-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chip {
+  font: inherit; font-weight: 700; font-size: 0.85rem;
+  background: #fff; color: var(--ink); border: 2px solid var(--ink);
+  border-radius: 999px; padding: 0.35rem 0.9rem; cursor: pointer;
+  box-shadow: 2px 2px 0 rgba(34, 57, 43, 0.18);
+}
+.chip:hover { transform: translateY(-1px); }
+.chip.active { background: var(--leaf); color: #fff; }
+.no-results { font-weight: 700; color: var(--ink-soft); margin: 1rem 0; }
+
 @media (max-width: 640px) {
   .site-head { padding: 0.8rem 1rem; }
   .site-head nav { gap: 1rem; font-size: 0.85rem; }
