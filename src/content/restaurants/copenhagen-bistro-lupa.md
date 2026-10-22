@@ -25,4 +25,4 @@ lastVerified: 2026-10-22
 ---
 Bistro Lupa takes everything Ark does brilliantly and loosens the tie: a plant-based neighbourhood bistro in Osterbro with a Green Michelin Star, a Bib Gourmand, Motown on the speakers and a kitchen powered by its own mushroom farm and a foraging team led by a former Noma head forager. VisitDenmark and Veggies Abroad both single it out for perfectly balanced flavours and real warmth.
 
-Order a la carte if you like choosing, or hand over to the chef's experience and do not miss the southern-fried oyster hats. The menu turns with the seasons, the natural wines and fermented cocktails are a delight, and it is open for dinner daily in 2026 listings. Reserve ahead, locals love this one.
+Order a la carte if you like choosing, or hand over to the chef's experience and do not miss the southern-fried oyster hats. The menu turns with the seasons, the natural wines and fermented cocktails are a delight, and it is open for dinner Monday to Saturday in current listings. Reserve ahead, locals love this one.

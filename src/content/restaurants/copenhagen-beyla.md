@@ -24,4 +24,4 @@ lastVerified: 2026-10-22
 ---
 Beyla is the easygoing star of the Ark collection: an all-day eatery and cocktail bar in Carlsberg Byen that does brunch, lunch and a six-course sharing dinner, all plant-based, all with the same care for local produce and low waste as its fine-dining siblings. Travellers in February and March 2026 rated it 4.9 and praised the creativity, the wine pairing and the friendly team.
 
-Come hungry and share everything. Japanese pancakes to start the day, sliders and banh mi at lunch, and that sharing menu at night make Beyla the pick when you want Ark-level cooking without the tasting-menu formality. It is open through the week in current listings.
+Come hungry and share everything. Japanese pancakes to start the day, sliders and banh mi at lunch, and that sharing menu at night make Beyla the pick when you want Ark-level cooking without the tasting-menu formality. Current listings show it open Wednesday to Sunday, with brunch at weekends.
