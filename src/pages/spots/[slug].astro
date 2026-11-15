@@ -20,14 +20,14 @@ const verified = spot.data.lastVerified.toISOString().slice(0, 10);
 
 <Base title={spot.data.name} description={spot.data.summary}>
   <div class="detail-head">
-    <p class="hero-kicker">😋 Pick #{String(spot.data.rank).padStart(3, '0')} · <a href={`/cities/${spot.data.city}/`}>{city?.data.title}</a></p>
+    <p class="eyebrow">Pick #{String(spot.data.rank).padStart(3, '0')} · <a href={`/cities/${spot.data.city}/`}>{city?.data.title}</a></p>
     <h1>{spot.data.name}</h1>
     <p>
-      {spot.data.rank === 1 && <span class="sticker top">👑 Top pick</span>}
-      <span class={`sticker ${spot.data.veganStatus === 'all-vegan' ? 'vegan' : 'friendly'}`}>
-        {spot.data.veganStatus === 'all-vegan' ? '🌱 100% vegan' : 'Vegan-friendly'}
+      {spot.data.rank === 1 && <span class="tag top">Editor's pick</span>}
+      <span class={`tag ${spot.data.veganStatus === 'all-vegan' ? '' : 'friendly'}`}>
+        {spot.data.veganStatus === 'all-vegan' ? '100% vegan' : 'Vegan-friendly'}
       </span>
-      <span class="sticker plain">{priceMarks(spot.data.price)}</span>
+      <span class="tag plain">{priceMarks(spot.data.price)}</span>
     </p>
     <div class="btn-row">
       <button class="btn" id="tasted-btn" data-slug={spot.id.replace(/\.mdx?$/, '')}>Been here? Mark it tasty</button>
@@ -42,17 +42,17 @@ const verified = spot.data.lastVerified.toISOString().slice(0, 10);
     <div><dt>Last checked</dt><dd>{verified}</dd></div>
   </dl>
 
-  <div class="section-head"><h2>Why we love it 💚</h2></div>
+  <div class="section-head"><h2>Why we love it</h2></div>
   <div class="rundown">
     <Content />
   </div>
 
-  <div class="section-head"><h2>What to order 🍽️</h2></div>
+  <div class="section-head"><h2>What to order</h2></div>
   <ul class="order-list">
     {spot.data.whatToOrder.map((item) => <li>{item}</li>)}
   </ul>
 
-  <div class="section-head"><h2>Sources 🔗</h2></div>
+  <div class="section-head"><h2>Sources</h2></div>
   <ul class="sources">
     {spot.data.sources.map((s) => <li><a href={s}>{s}</a></li>)}
   </ul>

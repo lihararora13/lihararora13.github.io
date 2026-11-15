@@ -19,12 +19,12 @@ const targets = allSpots
   .sort((a, b) => a.data.rank - b.data.rank);
 
 const movementLabel = { new: 'New!', up: 'Climbing ↑', down: 'Slipping ↓', same: '' };
-const movementClass = { new: 'new', up: 'vegan', down: 'plain', same: '' };
+const movementClass = { new: '', up: '', down: 'plain', same: '' };
 const priceMarks = (n) => '$'.repeat(n);
 ---
 
 <Base title={`${city.data.title} vegan guide`} description={city.data.summary}>
-  <p class="hero-kicker">🗺️ City guide</p>
+  <p class="eyebrow">City guide · {city.data.country}</p>
   <h1 class="hero">{city.data.title}</h1>
   <p class="lede">{city.data.summary}</p>
 
@@ -42,12 +42,12 @@ const priceMarks = (n) => '$'.repeat(n);
               <a href={`/spots/${t.id.replace(/\.mdx?$/, '')}/`}>{t.data.name}</a>
             </h3>
             <p style="margin: 0.2rem 0;">
-              {t.data.rank === 1 && <span class="sticker top">👑 Top pick</span>}
-              <span class={`sticker ${t.data.veganStatus === 'all-vegan' ? 'vegan' : 'friendly'}`}>
-                {t.data.veganStatus === 'all-vegan' ? '🌱 100% vegan' : 'Vegan-friendly'}
+              {t.data.rank === 1 && <span class="tag top">Editor's pick</span>}
+              <span class={`tag ${t.data.veganStatus === 'all-vegan' ? '' : 'friendly'}`}>
+                {t.data.veganStatus === 'all-vegan' ? '100% vegan' : 'Vegan-friendly'}
               </span>
               {movementLabel[t.data.movement] && (
-                <span class={`sticker ${movementClass[t.data.movement]}`}>{movementLabel[t.data.movement]}</span>
+                <span class={`tag ${movementClass[t.data.movement]}`}>{movementLabel[t.data.movement]}</span>
               )}
             </p>
             <p class="meta">{t.data.neighborhood} · {t.data.cuisine.join(', ')} · {priceMarks(t.data.price)}</p>
@@ -64,7 +64,7 @@ const priceMarks = (n) => '$'.repeat(n);
   ) : (
     <>
       <div class="note-card" style="margin-top: 1.5rem;">
-        🚧 {city.data.title} is on the list, but we're still tasting our way through it.
+        {city.data.title} is on the list, but we're still tasting our way through it.
         Good things take time (and many meals).
       </div>
       <div class="section-head"><h2>The lowdown</h2></div>
@@ -84,10 +84,10 @@ const priceMarks = (n) => '$'.repeat(n);
         const n = slugs.filter((s) => window.VP.has(s)).length;
         const pct = slugs.length ? Math.round((n / slugs.length) * 100) : 0;
         label.textContent = n === 0
-          ? `Tried 0 of ${slugs.length} — your delicious journey awaits 🥬`
+          ? `Tried 0 of ${slugs.length} — your delicious journey awaits`
           : n === slugs.length
-            ? `All ${slugs.length} tried. Certified local legend 🏆`
-            : `You've tried ${n} of ${slugs.length} — keep munching 🍽️`;
+            ? `All ${slugs.length} tried. Certified local legend`
+            : `You've tried ${n} of ${slugs.length} — keep munching`;
         fill.style.width = pct + '%';
         slugs.forEach((s) => {
           const row = document.querySelector(`[data-spot="${s}"]`);

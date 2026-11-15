@@ -36,13 +36,13 @@ const vpData = {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
     <header class="site-head">
-      <a class="brand" href="/"><span class="leaf">🌱</span> vegan.place</a>
+      <a class="brand" href="/"><img class="brand-mark" src="/favicon.svg" alt="" /> vegan.place</a>
       <nav>
         <a href="/#cities">Cities</a>
         <a href="/methodology">How we pick</a>
@@ -54,9 +54,9 @@ const vpData = {
     </main>
 
     <footer>
-      <p><strong>🌱 vegan.place</strong> — the best vegan food in every city.</p>
-      <p>No ads. No pay-to-play. Just the good stuff, re-checked monthly.</p>
-      <p style="font-size: 0.8rem; opacity: 0.7;">psst — the konami code makes it rain vegetables.</p>
+      <p><span class="foot-brand"><img class="brand-mark" src="/favicon.svg" alt="" /> vegan.place</span></p>
+      <p>A field guide to the best vegan food in every city. No ads. No pay-to-play. Just the good stuff, re-checked monthly.</p>
+      <p class="fine">psst — the konami code makes it rain vegetables.</p>
     </footer>
 
     <script type="application/json" id="vp-data" set:html={JSON.stringify(vpData)} />
