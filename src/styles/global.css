@@ -380,6 +380,7 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
   font-size: 1rem;
 }
 .feedme select:focus, .feedme input:focus { outline: 2px solid var(--leaf); outline-offset: 1px; }
+#fm-craving { flex: 1 1 300px; min-width: 280px; }
 #feedme-result { margin-top: 1.2rem; min-height: 2rem; }
 #feedme-result .pick {
   background: var(--card);
@@ -457,9 +458,10 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
   border: none;
   border-bottom: 2px solid transparent;
   border-radius: 0;
-  padding: 0.45rem 0.1rem;
+  padding: 0.45rem 0.25rem;
   cursor: pointer;
   box-shadow: none;
+  white-space: nowrap;
 }
 .chip:hover { transform: none; color: var(--ink); }
 .chip.active { background: transparent; color: var(--ink); border-bottom-color: var(--leaf); }
