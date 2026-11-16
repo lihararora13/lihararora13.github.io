@@ -467,6 +467,85 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
 .chip.active { background: transparent; color: var(--ink); border-bottom-color: var(--leaf); }
 .no-results { font-weight: 700; color: var(--ink-soft); margin: 1rem 0; }
 
+/* ---- region cards (homepage) ---- */
+.region-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0 2.5rem;
+  margin: 0.5rem 0 1rem;
+}
+.region-card {
+  display: block;
+  border-top: 1px solid var(--ink);
+  padding: 1.5rem 0 1.75rem;
+  color: var(--ink);
+}
+.region-card:hover { text-decoration: none; }
+.region-card:hover .region-link { text-decoration: underline; text-underline-offset: 3px; }
+.region-card .eyebrow { margin-bottom: 0.6rem; }
+.region-count { margin: 0; }
+.region-count strong {
+  font-family: var(--display);
+  font-size: 2rem;
+  font-weight: 560;
+  line-height: 1;
+}
+.region-headlines { color: var(--ink-soft); font-weight: 700; margin: 0.55rem 0 0.9rem; font-size: 0.98rem; }
+.region-link {
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--leaf-deep);
+}
+
+/* ---- homepage search results ---- */
+.search-results { margin: -0.5rem 0 1.5rem; max-width: 640px; }
+.search-hit {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--line-soft);
+  color: var(--ink);
+}
+.search-hit:hover { text-decoration: none; }
+.search-hit:hover .search-hit-name { color: var(--leaf-deep); text-decoration: underline; text-underline-offset: 3px; }
+.search-hit-name { font-family: var(--display); font-weight: 600; font-size: 1.15rem; }
+.search-hit-meta { color: var(--ink-soft); font-size: 0.88rem; font-weight: 700; padding-top: 0.25rem; white-space: nowrap; }
+
+/* ---- hub pages: view toggle, map, new-this-month ---- */
+.hub-new {
+  margin: 1.75rem 0 0;
+  padding: 0.9rem 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  font-size: 0.98rem;
+}
+.hub-new strong { color: var(--accent); }
+.view-toggle { display: flex; gap: 0.6rem; margin: 0 0 1.5rem; }
+.view-toggle .btn.active { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+#region-map {
+  height: 430px;
+  border: 1px solid var(--line);
+  margin: 0 0 1.75rem;
+  z-index: 1;
+  background: var(--paper-2);
+}
+#region-map .leaflet-popup-content { font-family: var(--body); font-size: 0.95rem; line-height: 1.5; }
+#region-map .leaflet-popup-content a { color: var(--leaf-deep); }
+.vp-pin { background: transparent; border: none; }
+.vp-pin span {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--leaf-deep);
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px rgba(31, 58, 42, 0.35);
+}
+.region-chips a.chip:hover { text-decoration: none; }
+
 @media (max-width: 640px) {
   .site-head { padding: 0.8rem 1rem; }
   .site-head nav { gap: 1rem; font-size: 0.85rem; }

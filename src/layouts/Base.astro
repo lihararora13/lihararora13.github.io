@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { getCollection } from 'astro:content';
+import { regionOf } from '../lib/regions';
 
 interface Props {
   title: string;
@@ -21,7 +22,15 @@ const vpData = {
     summary: s.data.summary,
     rank: s.data.rank,
   })),
-  cities: cities.map((c) => ({ slug: slugOf(c), title: c.data.title, status: c.data.status })),
+  cities: cities.map((c) => ({
+    slug: slugOf(c),
+    title: c.data.title,
+    country: c.data.country,
+    region: regionOf(c.data.country),
+    status: c.data.status,
+    lat: c.data.lat ?? null,
+    lng: c.data.lng ?? null,
+  })),
 };
 ---
 
@@ -33,6 +42,7 @@ const vpData = {
     <title>{title} · vegan.place</title>
     <meta name="description" content={description} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -44,7 +54,7 @@ const vpData = {
     <header class="site-head">
       <a class="brand" href="/"><img class="brand-mark" src="/favicon.svg" alt="" /> vegan.place</a>
       <nav>
-        <a href="/#cities">Cities</a>
+        <a href="/#regions">Cities</a>
         <a href="/methodology">How we pick</a>
       </nav>
     </header>

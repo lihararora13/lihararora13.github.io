@@ -1,0 +1,220 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { REGIONS, REGION_BLURBS, regionOf, regionSlug } from '../../lib/regions';
+
+export async function getStaticPaths() {
+  return REGIONS.map((region) => ({
+    params: { slug: regionSlug(region) },
+    props: { region },
+  }));
+}
+
+const { region } = Astro.props;
+const cities = await getCollection('cities');
+const spots = await getCollection('restaurants');
+const slugOf = (e) => e.id.replace(/\.mdx?$/, '');
+
+const inRegion = (c) => regionOf(c.data.country) === region;
+const live = cities
+  .filter((c) => c.data.status === 'live' && inRegion(c))
+  .sort((a, b) => a.data.title.localeCompare(b.data.title));
+const soon = cities
+  .filter((c) => c.data.status === 'soon' && inRegion(c))
+  .sort((a, b) => a.data.title.localeCompare(b.data.title));
+const regionSpots = spots.filter((s) => live.some((c) => slugOf(c) === s.data.city));
+
+// Most recent verification per city; "new this month" = verified in the
+// current calendar month at build time.
+const latestByCity = new Map<string, number>();
+for (const s of spots) {
+  const t = s.data.lastVerified.getTime();
+  if (!latestByCity.has(s.data.city) || t > (latestByCity.get(s.data.city) as number)) {
+    latestByCity.set(s.data.city, t);
+  }
+}
+const now = new Date();
+const newThisMonth = live.filter((c) => {
+  const t = latestByCity.get(slugOf(c));
+  if (!t) return false;
+  const d = new Date(t);
+  return d.getUTCMonth() === now.getUTCMonth() && d.getUTCFullYear() === now.getUTCFullYear();
+});
+---
+
+<Base title={`${region} vegan guides`} description={`${live.length} ranked vegan city guides in ${region}. ${REGION_BLURBS[region]}`}>
+  <p class="eyebrow"><a href="/#regions">All regions</a> / Region guide</p>
+  <h1 class="hero">{region}</h1>
+  <p class="lede">{REGION_BLURBS[region]}</p>
+  <div class="hero-stats">
+    <div><strong>{live.length}</strong><span>{live.length === 1 ? 'City guide' : 'City guides'}</span></div>
+    <div><strong>{regionSpots.length}</strong><span>Spots ranked</span></div>
+    {soon.length > 0 && <div><strong>{soon.length}</strong><span>Coming soon</span></div>}
+  </div>
+
+  {newThisMonth.length > 0 && (
+    <p class="hub-new">
+      <strong>New this month:</strong>{' '}
+      {newThisMonth.map((c) => c.data.title).join(', ')} — freshly verified and on the list.
+    </p>
+  )}
+
+  <div class="section-head">
+    <h2>The index</h2>
+    <p class="sub">Every {region} guide, ranked lists only. Search, switch to the map, or hop regions.</p>
+  </div>
+
+  <div class="view-toggle" role="group" aria-label="View as list or map">
+    <button class="btn active" id="view-list" aria-pressed="true">List</button>
+    <button class="btn" id="view-map" aria-pressed="false">Map</button>
+  </div>
+
+  <div class="city-tools">
+    <input id="city-search" type="search" placeholder="Search cities… (e.g. paris, texas)" aria-label="Search cities" />
+    <div class="region-chips" role="group" aria-label="Browse other regions">
+      <a class="chip" href="/#regions">All</a>
+      {REGIONS.map((r) => (
+        <a class={`chip${r === region ? ' active' : ''}`} href={`/regions/${regionSlug(r)}/`}>{r}</a>
+      ))}
+    </div>
+  </div>
+
+  <div id="region-map" data-region={region} hidden></div>
+
+  <div id="city-grid">
+    {live.map((c, i) => (
+      <article
+        class="index-row city-card"
+        data-name={c.data.title.toLowerCase()}
+        data-country={c.data.country.toLowerCase()}
+        data-region={region}
+      >
+        <span class="index-num">{String(i + 1).padStart(2, '0')}</span>
+        <div class="index-main">
+          <h3><a href={`/cities/${slugOf(c)}/`}>{c.data.title}</a></h3>
+          <p class="meta">{c.data.country} · {region}</p>
+          <p class="summary">{c.data.summary}</p>
+        </div>
+        <span class="index-status">Live</span>
+      </article>
+    ))}
+    {soon.map((c) => (
+      <article
+        class="index-row city-card"
+        data-name={c.data.title.toLowerCase()}
+        data-country={c.data.country.toLowerCase()}
+        data-region={region}
+      >
+        <span class="index-num">–</span>
+        <div class="index-main">
+          <h3>{c.data.title}</h3>
+          <p class="meta">{c.data.country} · {region}</p>
+          <p class="summary">{c.data.summary}</p>
+        </div>
+        <span class="index-status soon">Coming soon</span>
+      </article>
+    ))}
+  </div>
+  <p class="no-results" id="city-no-results" hidden>No city matches that search. Try another craving?</p>
+
+  <script>
+    const data = JSON.parse(document.getElementById('vp-data').textContent || '{}');
+    const mapEl = document.getElementById('region-map');
+    const regionName = mapEl ? mapEl.dataset.region : '';
+    const grid = document.getElementById('city-grid');
+
+    // ---- city search (filters this hub's list) ----
+    const citySearch = document.getElementById('city-search');
+    const cityCards = grid ? Array.from(grid.querySelectorAll('.city-card')) : [];
+    const cityNoResults = document.getElementById('city-no-results');
+    function applyCityFilter() {
+      const q = (citySearch.value || '').trim().toLowerCase();
+      let shown = 0;
+      cityCards.forEach((card) => {
+        const hay = card.dataset.name + ' ' + card.dataset.country;
+        const ok = !q || hay.includes(q);
+        card.style.display = ok ? '' : 'none';
+        if (ok) shown++;
+      });
+      if (cityNoResults) cityNoResults.hidden = shown > 0;
+    }
+    if (citySearch) citySearch.addEventListener('input', applyCityFilter);
+
+    // ---- map / list toggle (Leaflet loads lazily, only when asked for) ----
+    const btnList = document.getElementById('view-list');
+    const btnMap = document.getElementById('view-map');
+    let map = null;
+    let leafletLoading = null;
+
+    function loadLeaflet() {
+      if (window.L) return Promise.resolve();
+      if (!leafletLoading) {
+        leafletLoading = new Promise((resolve, reject) => {
+          const s = document.createElement('script');
+          s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+          s.onload = resolve;
+          s.onerror = () => reject(new Error('Leaflet failed to load'));
+          document.head.appendChild(s);
+        });
+      }
+      return leafletLoading;
+    }
+
+    function initMap() {
+      const pins = (data.cities || []).filter(
+        (c) => c.region === regionName && c.status === 'live' && c.lat != null && c.lng != null
+      );
+      map = window.L.map('region-map', { scrollWheelZoom: false });
+      window.L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
+      const bounds = [];
+      pins.forEach((c) => {
+        const marker = window.L.marker([c.lat, c.lng], {
+          icon: window.L.divIcon({
+            className: 'vp-pin',
+            html: '<span></span>',
+            iconSize: [18, 18],
+            iconAnchor: [9, 9],
+          }),
+        }).addTo(map);
+        marker.bindPopup(
+          '<a href="/cities/' + c.slug + '/"><strong>' + c.title + '</strong></a><br>' + c.country
+        );
+        bounds.push([c.lat, c.lng]);
+      });
+      if (bounds.length) map.fitBounds(bounds, { padding: [28, 28] });
+      else map.setView([20, 0], 2);
+    }
+
+    async function showMap() {
+      mapEl.hidden = false;
+      grid.hidden = true;
+      btnMap.classList.add('active');
+      btnMap.setAttribute('aria-pressed', 'true');
+      btnList.classList.remove('active');
+      btnList.setAttribute('aria-pressed', 'false');
+      try {
+        await loadLeaflet();
+        if (!map) initMap();
+        else map.invalidateSize();
+      } catch (e) {
+        mapEl.innerHTML = '<p class="no-results">The map could not load. The list below is still here.</p>';
+        grid.hidden = false;
+      }
+    }
+
+    function showList() {
+      mapEl.hidden = true;
+      grid.hidden = false;
+      btnList.classList.add('active');
+      btnList.setAttribute('aria-pressed', 'true');
+      btnMap.classList.remove('active');
+      btnMap.setAttribute('aria-pressed', 'false');
+    }
+
+    if (btnMap) btnMap.addEventListener('click', showMap);
+    if (btnList) btnList.addEventListener('click', showList);
+  </script>
+</Base>
