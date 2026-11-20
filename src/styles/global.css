@@ -163,8 +163,6 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
 .btn:hover { background: var(--ink); color: var(--paper); text-decoration: none; }
 .btn.solid { background: var(--leaf-deep); border-color: var(--leaf-deep); color: #fff; }
 .btn.solid:hover { background: var(--leaf); border-color: var(--leaf); }
-.btn.sunny { background: var(--accent); border-color: var(--accent); color: #fff; }
-.btn.sunny:hover { background: #9C4522; border-color: #9C4522; }
 .btn-row { display: flex; gap: 0.9rem; flex-wrap: wrap; margin: 1.75rem 0 0; }
 
 /* ---- small-caps tags (replace sticker badges) ---- */
@@ -234,13 +232,6 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
   white-space: nowrap;
 }
 .index-status.soon { color: var(--ink-soft); }
-
-.spot-row { padding: 1.25rem 0; border-bottom: 1px solid var(--line); }
-.spot-row:last-child { border-bottom: none; }
-.spot-row h3 { margin: 0 0 0.2rem; font-size: 1.35rem; }
-.spot-row h3 a { color: var(--ink); font-weight: 600; }
-.spot-row .meta { color: var(--ink-soft); font-size: 0.9rem; font-weight: 700; margin: 0 0 0.3rem; }
-.spot-row p:last-child { margin: 0.3rem 0 0; }
 
 /* generic card (methodology) — plain hairline block, no box */
 .card {
@@ -356,43 +347,6 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
 }
 .sources { font-size: 0.88rem; color: var(--ink-soft); word-break: break-all; max-width: 680px; padding-left: 1.1rem; }
 .sources li { margin-bottom: 0.35rem; }
-
-/* ---- feed me widget ---- */
-.feedme {
-  background: var(--paper-2);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 2.1rem 2.3rem;
-  margin: 2.75rem 0;
-  box-shadow: none;
-  position: relative;
-}
-.feedme h2 { margin: 0 0 0.3rem; font-size: 1.75rem; }
-.feedme .controls { display: flex; gap: 0.9rem; flex-wrap: wrap; margin: 1.3rem 0 0.4rem; align-items: center; }
-.feedme select, .feedme input {
-  background: var(--card);
-  color: var(--ink);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  font-family: var(--body);
-  font-weight: 600;
-  padding: 0.7rem 1rem;
-  font-size: 1rem;
-}
-.feedme select:focus, .feedme input:focus { outline: 2px solid var(--leaf); outline-offset: 1px; }
-#fm-craving { flex: 1 1 300px; min-width: 280px; }
-#feedme-result { margin-top: 1.2rem; min-height: 2rem; }
-#feedme-result .pick {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--leaf-deep);
-  border-radius: var(--radius);
-  padding: 1.3rem 1.5rem;
-  box-shadow: none;
-  animation: fadein 0.35s ease;
-}
-@keyframes fadein { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
-#feedme-result .pick h3 { margin: 0 0 0.3rem; font-size: 1.5rem; }
 
 /* ---- sections ---- */
 .section-head { margin: 3.25rem 0 1.25rem; }
@@ -534,6 +488,17 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
 }
 #region-map .leaflet-popup-content { font-family: var(--body); font-size: 0.95rem; line-height: 1.5; }
 #region-map .leaflet-popup-content a { color: var(--leaf-deep); }
+
+/* ---- city page map (same Leaflet treatment as the region hubs) ---- */
+#city-map {
+  height: 380px;
+  border: 1px solid var(--line);
+  margin: 0 0 1.75rem;
+  z-index: 1;
+  background: var(--paper-2);
+}
+#city-map .leaflet-popup-content { font-family: var(--body); font-size: 0.95rem; line-height: 1.5; }
+#city-map .leaflet-popup-content a { color: var(--leaf-deep); }
 .vp-pin { background: transparent; border: none; }
 .vp-pin span {
   display: block;
@@ -551,7 +516,6 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
   .site-head nav { gap: 1rem; font-size: 0.85rem; }
   .hero-wrap { padding: 2.25rem 0 2rem; }
   .hero-stats { gap: 1.5rem; }
-  .feedme { padding: 1.6rem 1.3rem; }
   .rank-row { grid-template-columns: 2.6rem 1fr; gap: 0.9rem; padding: 1.4rem 0; }
   .rank-num { font-size: 1.8rem; }
   .index-row { grid-template-columns: 2rem 1fr; gap: 0.2rem 0.9rem; }
@@ -563,4 +527,5 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
   .step-num { font-size: 1.4rem; }
   .facts > div { flex-direction: column; gap: 0.15rem; }
   .facts dd { text-align: left; }
+  #city-map { height: 300px; }
 }

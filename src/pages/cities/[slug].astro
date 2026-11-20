@@ -34,6 +34,27 @@ const priceMarks = (n) => '$'.repeat(n);
         <p class="progress-label" id="progress-label"></p>
         <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width: 0%"></div></div>
       </div>
+      <div class="section-head">
+        <h2>On the map</h2>
+        <p class="sub">Every spot in this guide, pinned.</p>
+      </div>
+      <div id="city-map"></div>
+      <script
+        type="application/json"
+        id="city-pins"
+        set:html={JSON.stringify(
+          targets
+            .filter((t) => t.data.lat != null && t.data.lng != null)
+            .map((t) => ({
+              slug: t.id.replace(/\.mdx?$/, ''),
+              name: t.data.name,
+              rank: t.data.rank,
+              neighborhood: t.data.neighborhood,
+              lat: t.data.lat,
+              lng: t.data.lng,
+            }))
+        )}
+      />
       {targets.map((t) => (
         <div class={`rank-row${t.data.rank === 1 ? ' top-pick' : ''}`} data-spot={t.id.replace(/\.mdx?$/, '')}>
           <div class="rank-num">{t.data.rank}</div>
@@ -97,6 +118,58 @@ const priceMarks = (n) => '$'.repeat(n);
       update();
       window.addEventListener('storage', update);
       setInterval(update, 1000);
+    }
+
+    // ---- city map (Leaflet, lazy-loaded like the region hubs) ----
+    const mapEl = document.getElementById('city-map');
+    if (mapEl) {
+      const pins = JSON.parse(document.getElementById('city-pins').textContent || '[]');
+      if (!pins.length) {
+        mapEl.hidden = true;
+        const head = mapEl.previousElementSibling;
+        if (head) head.hidden = true;
+      } else {
+        let leafletLoading = null;
+        function loadLeaflet() {
+          if (window.L) return Promise.resolve();
+          if (!leafletLoading) {
+            leafletLoading = new Promise((resolve, reject) => {
+              const s = document.createElement('script');
+              s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+              s.onload = resolve;
+              s.onerror = () => reject(new Error('Leaflet failed to load'));
+              document.head.appendChild(s);
+            });
+          }
+          return leafletLoading;
+        }
+        loadLeaflet().then(() => {
+          const map = window.L.map('city-map', { scrollWheelZoom: false });
+          window.L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          }).addTo(map);
+          const bounds = [];
+          pins.forEach((p) => {
+            const marker = window.L.marker([p.lat, p.lng], {
+              icon: window.L.divIcon({
+                className: 'vp-pin',
+                html: '<span></span>',
+                iconSize: [18, 18],
+                iconAnchor: [9, 9],
+              }),
+            }).addTo(map);
+            marker.bindPopup(
+              '<strong>#' + p.rank + ' <a href="/spots/' + p.slug + '/">' + p.name + '</a></strong><br>' + p.neighborhood
+            );
+            bounds.push([p.lat, p.lng]);
+          });
+          if (bounds.length === 1) map.setView(bounds[0], 15);
+          else map.fitBounds(bounds, { padding: [28, 28] });
+        }).catch(() => {
+          mapEl.innerHTML = '<p class="no-results">The map could not load. The ranked list below has every address.</p>';
+        });
+      }
     }
   </script>
 </Base>

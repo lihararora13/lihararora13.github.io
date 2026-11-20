@@ -8,9 +8,6 @@ const live = cities.filter((c) => c.data.status === 'live');
 const soon = cities.filter((c) => c.data.status === 'soon');
 const spots = await getCollection('restaurants');
 const slugOf = (e) => e.id.replace(/\.mdx?$/, '');
-const latest = [...spots]
-  .sort((a, b) => b.data.lastVerified.getTime() - a.data.lastVerified.getTime())
-  .slice(0, 3);
 
 // Most recent verification per city, used to pick headline cities per region.
 const latestByCity = new Map<string, number>();
@@ -52,20 +49,6 @@ const byRegion = (region: string) =>
     </div>
   </div>
 
-  <div class="feedme" id="feedme">
-    <p class="eyebrow">Can't decide?</p>
-    <h2>Hungry and indecisive? Same.</h2>
-    <p style="color: var(--ink-soft); font-weight: 600; margin: 0.4rem 0 0;">Pick a city, name a craving, and let dinner choose you.</p>
-    <div class="controls">
-      <select id="fm-city" aria-label="city">
-        {live.map((c) => <option value={slugOf(c)}>{c.data.title}</option>)}
-      </select>
-      <input id="fm-craving" placeholder="craving? (e.g. thai, pizza, brunch)" aria-label="craving" />
-      <button class="btn sunny" id="fm-go">Feed me</button>
-    </div>
-    <div id="feedme-result" aria-live="polite"></div>
-  </div>
-
   <div class="section-head" id="regions">
     <h2>Browse by region</h2>
     <p class="sub">{live.length} ranked guides across five regions. Pick a region, or search for a city.</p>
@@ -92,20 +75,6 @@ const byRegion = (region: string) =>
     })}
   </div>
 
-  <div class="section-head">
-    <h2>Freshly checked</h2>
-    <p class="sub">The most recently verified spots across all cities.</p>
-  </div>
-  <div>
-    {latest.map((s) => (
-      <div class="spot-row">
-        <h3><a href={`/spots/${slugOf(s)}/`}>{s.data.name}</a></h3>
-        <p class="meta">{s.data.neighborhood} · {s.data.cuisine.join(', ')}</p>
-        <p>{s.data.summary}</p>
-      </div>
-    ))}
-  </div>
-
   <hr class="divider" />
   <div class="note-card">
     This is a short list, not a phone book. If a city has twelve spots worth your
@@ -113,38 +82,7 @@ const byRegion = (region: string) =>
   </div>
 
   <script>
-    // Feed me randomizer
     const data = JSON.parse(document.getElementById('vp-data').textContent || '{}');
-    const spots = data.spots || [];
-    const result = document.getElementById('feedme-result');
-    const CHEERS = ['Dinner: decided.', 'The craving gods have spoken.', 'Excellent choice. Obviously.', 'Your taste buds thank you.'];
-
-    document.getElementById('fm-go').addEventListener('click', () => {
-      const city = document.getElementById('fm-city').value;
-      const craving = document.getElementById('fm-craving').value.trim().toLowerCase();
-      let pool = spots.filter((s) => s.city === city);
-      if (craving) {
-        pool = pool.filter((s) =>
-          (s.cuisine.join(' ') + ' ' + s.name + ' ' + s.summary).toLowerCase().includes(craving)
-        );
-      }
-      if (!pool.length) {
-        result.innerHTML = '<p style="font-weight: 700;">Hmm, nothing matches that craving. Broaden your horizons?</p>';
-        return;
-      }
-      result.innerHTML = '<p style="font-weight: 700;">Consulting the flavor oracle…</p>';
-      setTimeout(() => {
-        const pick = pool[Math.floor(Math.random() * pool.length)];
-        const cheer = CHEERS[Math.floor(Math.random() * CHEERS.length)];
-        result.innerHTML =
-          '<div class="pick">' +
-          '<p style="font-weight: 800; color: var(--leaf-deep); margin: 0 0 0.4rem;">' + cheer + '</p>' +
-          '<h3><a href="/spots/' + pick.slug + '/">' + pick.name + '</a></h3>' +
-          '<p class="meta">' + pick.cuisine.join(', ') + '</p>' +
-          '<p>' + pick.summary + '</p>' +
-          '</div>';
-      }, 700);
-    });
 
     // City search: live results jump straight to the guide.
     const citySearch = document.getElementById('city-search');

@@ -10,18 +10,9 @@ interface Props {
 
 const { title, description = 'The best vegan food in every city. Short lists, strong opinions, zero filler.' } = Astro.props;
 
-const spots = await getCollection('restaurants');
 const cities = await getCollection('cities');
 const slugOf = (e) => e.id.replace(/\.mdx?$/, '');
 const vpData = {
-  spots: spots.map((s) => ({
-    slug: slugOf(s),
-    name: s.data.name,
-    city: s.data.city,
-    cuisine: s.data.cuisine,
-    summary: s.data.summary,
-    rank: s.data.rank,
-  })),
   cities: cities.map((c) => ({
     slug: slugOf(c),
     title: c.data.title,
