@@ -49,6 +49,12 @@ const byRegion = (region: string) =>
     </div>
   </div>
 
+  <div class="section-head">
+    <h2>The world map</h2>
+    <p class="sub">Every city we've ranked, pinned. Tap a dot to open its guide.</p>
+  </div>
+  <div id="world-map"></div>
+
   <div class="section-head" id="regions">
     <h2>Browse by region</h2>
     <p class="sub">{live.length} ranked guides across five regions. Pick a region, or search for a city.</p>
@@ -83,6 +89,56 @@ const byRegion = (region: string) =>
 
   <script>
     const data = JSON.parse(document.getElementById('vp-data').textContent || '{}');
+
+    // ---- world map (Leaflet, lazy-loaded like the region hubs) ----
+    // Map code first and independent of window.VP: nothing above it may
+    // throw and stop it from running.
+    const worldMapEl = document.getElementById('world-map');
+    if (worldMapEl) {
+      const pins = (data.cities || []).filter(
+        (c) => c.status === 'live' && c.lat != null && c.lng != null
+      );
+      let leafletLoading = null;
+      function loadLeaflet() {
+        if (window.L) return Promise.resolve();
+        if (!leafletLoading) {
+          leafletLoading = new Promise((resolve, reject) => {
+            const s = document.createElement('script');
+            s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+            s.onload = resolve;
+            s.onerror = () => reject(new Error('Leaflet failed to load'));
+            document.head.appendChild(s);
+          });
+        }
+        return leafletLoading;
+      }
+      loadLeaflet().then(() => {
+        const map = window.L.map('world-map', { scrollWheelZoom: false });
+        window.L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 18,
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(map);
+        const bounds = [];
+        pins.forEach((c) => {
+          const marker = window.L.marker([c.lat, c.lng], {
+            icon: window.L.divIcon({
+              className: 'vp-pin',
+              html: '<span></span>',
+              iconSize: [18, 18],
+              iconAnchor: [9, 9],
+            }),
+          }).addTo(map);
+          marker.bindPopup(
+            '<a href="/cities/' + c.slug + '/"><strong>' + c.title + '</strong></a><br>' + c.country
+          );
+          bounds.push([c.lat, c.lng]);
+        });
+        if (bounds.length) map.fitBounds(bounds, { padding: [28, 28] });
+        else map.setView([20, 0], 2);
+      }).catch(() => {
+        worldMapEl.innerHTML = '<p class="no-results">The map could not load. The region list below has every guide.</p>';
+      });
+    }
 
     // City search: live results jump straight to the guide.
     const citySearch = document.getElementById('city-search');

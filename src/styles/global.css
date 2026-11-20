@@ -489,6 +489,17 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
 #region-map .leaflet-popup-content { font-family: var(--body); font-size: 0.95rem; line-height: 1.5; }
 #region-map .leaflet-popup-content a { color: var(--leaf-deep); }
 
+/* ---- homepage world map (same Leaflet treatment as the region hubs) ---- */
+#world-map {
+  height: 420px;
+  border: 1px solid var(--line);
+  margin: 0 0 1.75rem;
+  z-index: 1;
+  background: var(--paper-2);
+}
+#world-map .leaflet-popup-content { font-family: var(--body); font-size: 0.95rem; line-height: 1.5; }
+#world-map .leaflet-popup-content a { color: var(--leaf-deep); }
+
 /* ---- city page map (same Leaflet treatment as the region hubs) ---- */
 #city-map {
   height: 380px;
@@ -527,5 +538,5 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
   .step-num { font-size: 1.4rem; }
   .facts > div { flex-direction: column; gap: 0.15rem; }
   .facts dd { text-align: left; }
-  #city-map { height: 300px; }
+  #city-map, #world-map { height: 300px; }
 }

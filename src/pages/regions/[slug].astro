@@ -61,12 +61,12 @@ const newThisMonth = live.filter((c) => {
 
   <div class="section-head">
     <h2>The index</h2>
-    <p class="sub">Every {region} guide, ranked lists only. Search, switch to the map, or hop regions.</p>
+    <p class="sub">Every {region} guide, on the map first. Search, switch to the list, or hop regions.</p>
   </div>
 
-  <div class="view-toggle" role="group" aria-label="View as list or map">
-    <button class="btn active" id="view-list" aria-pressed="true">List</button>
-    <button class="btn" id="view-map" aria-pressed="false">Map</button>
+  <div class="view-toggle" role="group" aria-label="View as map or list">
+    <button class="btn active" id="view-map" aria-pressed="true">Map</button>
+    <button class="btn" id="view-list" aria-pressed="false">List</button>
   </div>
 
   <div class="city-tools">
@@ -79,9 +79,9 @@ const newThisMonth = live.filter((c) => {
     </div>
   </div>
 
-  <div id="region-map" data-region={region} hidden></div>
+  <div id="region-map" data-region={region}></div>
 
-  <div id="city-grid">
+  <div id="city-grid" hidden>
     {live.map((c, i) => (
       <article
         class="index-row city-card"
@@ -129,6 +129,8 @@ const newThisMonth = live.filter((c) => {
     const cityNoResults = document.getElementById('city-no-results');
     function applyCityFilter() {
       const q = (citySearch.value || '').trim().toLowerCase();
+      // A search is a list job: switch off the map so the filtered rows show.
+      if (q) showList();
       let shown = 0;
       cityCards.forEach((card) => {
         const hay = card.dataset.name + ' ' + card.dataset.country;
@@ -216,5 +218,8 @@ const newThisMonth = live.filter((c) => {
 
     if (btnMap) btnMap.addEventListener('click', showMap);
     if (btnList) btnList.addEventListener('click', showList);
+
+    // Map is the default view: initialise it on load, like the city pages.
+    showMap();
   </script>
 </Base>
