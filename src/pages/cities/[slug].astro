@@ -102,6 +102,9 @@ const priceMarks = (n) => '$'.repeat(n);
       const label = document.getElementById('progress-label');
       const fill = document.getElementById('progress-fill');
       const update = () => {
+        // VP is defined by the layout's inline script, but never let a
+        // missing VP kill this module (and the map code below it).
+        if (!window.VP) return;
         const n = slugs.filter((s) => window.VP.has(s)).length;
         const pct = slugs.length ? Math.round((n / slugs.length) * 100) : 0;
         label.textContent = n === 0

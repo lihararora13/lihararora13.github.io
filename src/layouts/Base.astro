@@ -62,8 +62,10 @@ const vpData = {
 
     <script type="application/json" id="vp-data" set:html={JSON.stringify(vpData)} />
 
-    <script>
+    <script is:inline>
       // ---- tried-it tracker (localStorage, no accounts) ----
+      // Classic inline script on purpose: it must run during parsing, before
+      // the deferred module scripts on city/spot pages read window.VP.
       window.VP = {
         key: 'vp-tasted-v1',
         get() {
