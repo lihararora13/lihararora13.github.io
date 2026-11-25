@@ -28,14 +28,7 @@ const byRegion = (region: string) =>
 
 <Base title="The best vegan food in every city">
   <div class="hero-wrap">
-    <svg class="hero-stamp" viewBox="0 0 168 168" aria-hidden="true">
-      <defs><path id="stamp-circle" d="M84,84 m-62,0 a62,62 0 1,1 124,0 a62,62 0 1,1 -124,0" /></defs>
-      <circle cx="84" cy="84" r="80" fill="none" stroke="#B4552D" stroke-width="2" />
-      <circle cx="84" cy="84" r="46" fill="none" stroke="#B4552D" stroke-width="1" />
-      <text fill="#B4552D" font-size="12.5" letter-spacing="2" font-family="Courier Prime, monospace" font-weight="700"><textPath href="#stamp-circle">VEGAN.PLACE ★ FOOD PASSPORT ★ EST. 2026 ★ </textPath></text>
-      <text x="84" y="97" text-anchor="middle" font-size="32">🌱</text>
-    </svg>
-    <p class="eyebrow">A food passport to plant-based eating</p>
+    <p class="eyebrow">A field guide to plant-based eating</p>
     <h1 class="hero">
       The best <em>vegan food</em><br />
       in every city.
@@ -46,7 +39,7 @@ const byRegion = (region: string) =>
       no 400-entry directory of places that once had a veggie burger.
     </p>
     <div class="hero-stats">
-      <div><strong>{live.length}</strong><span>City stamps</span></div>
+      <div><strong>{live.length}</strong><span>City guides</span></div>
       <div><strong>{spots.length}</strong><span>Spots ranked</span></div>
       <div><strong>Monthly</strong><span>Re-checked</span></div>
     </div>
@@ -57,11 +50,10 @@ const byRegion = (region: string) =>
   </div>
 
   <div class="section-head">
-    <h2>The atlas</h2>
-    <p class="sub">Every city we've stamped, pinned. Tap a dot to open its guide.</p>
+    <h2>The world map</h2>
+    <p class="sub">Every city we've ranked, pinned. Tap a dot to open its guide.</p>
   </div>
   <div id="world-map"></div>
-  <p class="map-caption">Atlas · {live.length} stamps issued</p>
 
   <div class="section-head" id="regions">
     <h2>Browse by region</h2>

@@ -21,24 +21,11 @@ const targets = allSpots
 const movementLabel = { new: 'New!', up: 'Climbing ↑', down: 'Slipping ↓', same: '' };
 const movementClass = { new: '', up: '', down: 'plain', same: '' };
 const priceMarks = (n) => '$'.repeat(n);
-const latestVerified = targets.reduce((m, t) => Math.max(m, t.data.lastVerified.getTime()), 0);
-const verifiedLabel = latestVerified ? new Date(latestVerified).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase() : '';
 ---
 
 <Base title={`${city.data.title} vegan guide`} description={city.data.summary}>
-  <div class="city-head">
-    <div>
-      <p class="eyebrow">City guide · {city.data.country}</p>
-      <h1 class="hero">{city.data.title}</h1>
-    </div>
-    {city.data.status === 'live' && (
-      <div class="stamp" aria-hidden="true">
-        <span class="stamp-top">Vegan.place</span>
-        <span class="stamp-mid">Verified</span>
-        <span class="stamp-bot">{verifiedLabel}</span>
-      </div>
-    )}
-  </div>
+  <p class="eyebrow">City guide · {city.data.country}</p>
+  <h1 class="hero">{city.data.title}</h1>
   <p class="lede">{city.data.summary}</p>
 
   {city.data.status === 'live' ? (
@@ -48,11 +35,10 @@ const verifiedLabel = latestVerified ? new Date(latestVerified).toLocaleDateStri
         <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width: 0%"></div></div>
       </div>
       <div class="section-head">
-        <h2>The atlas</h2>
-        <p class="sub">Every spot in this guide, pinned. Bring an appetite.</p>
+        <h2>On the map</h2>
+        <p class="sub">Every spot in this guide, pinned.</p>
       </div>
       <div id="city-map"></div>
-      <p class="map-caption">Atlas — {city.data.title} · {targets.length} stamps</p>
       <script
         type="application/json"
         id="city-pins"
@@ -122,10 +108,10 @@ const verifiedLabel = latestVerified ? new Date(latestVerified).toLocaleDateStri
         const n = slugs.filter((s) => window.VP.has(s)).length;
         const pct = slugs.length ? Math.round((n / slugs.length) * 100) : 0;
         label.textContent = n === 0
-          ? `0 of ${slugs.length} stamps collected — your passport awaits its first stamp`
+          ? `Tried 0 of ${slugs.length} — your delicious journey awaits`
           : n === slugs.length
-            ? `All ${slugs.length} stamps collected. Certified local legend`
-            : `${n} of ${slugs.length} stamps collected — keep collecting`;
+            ? `All ${slugs.length} tried. Certified local legend`
+            : `You've tried ${n} of ${slugs.length} — keep munching`;
         fill.style.width = pct + '%';
         slugs.forEach((s) => {
           const row = document.querySelector(`[data-spot="${s}"]`);
