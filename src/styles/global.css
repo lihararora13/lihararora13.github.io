@@ -15,7 +15,8 @@
   --accent: #B4552D;
   --gold: #C9A227;
   --display: 'Fraunces', Georgia, 'Times New Roman', serif;
-  --body: 'Nunito', system-ui, sans-serif;
+  --body: 'Inter', system-ui, sans-serif;
+  --label: 'Courier Prime', 'Courier New', monospace;
   --radius: 4px;
 }
 
@@ -48,9 +49,10 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* small-caps eyebrow used above headlines */
 .eyebrow {
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.22em;
+  font-family: var(--label);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--leaf);
   margin: 0 0 1rem;
@@ -80,8 +82,9 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .site-head nav { display: flex; gap: 1.6rem; }
 .site-head nav a {
   color: var(--ink-soft);
-  font-weight: 800;
-  font-size: 0.82rem;
+  font-family: var(--label);
+  font-weight: 700;
+  font-size: 0.88rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -112,9 +115,21 @@ footer .fine { font-size: 0.8rem; opacity: 0.75; }
 
 /* ---- hero ---- */
 .hero-wrap {
+  position: relative;
   padding: 3.5rem 0 2.75rem;
   margin-bottom: 2.5rem;
   border-bottom: 1px solid var(--ink);
+}
+/* circular passport stamp in the hero, SVG text on a ring */
+.hero-stamp {
+  position: absolute;
+  right: 1%;
+  top: 5%;
+  width: 168px;
+  height: 168px;
+  transform: rotate(10deg);
+  opacity: 0.92;
+  pointer-events: none;
 }
 h1.hero {
   font-size: clamp(2.5rem, 6vw, 4.1rem);
@@ -138,8 +153,9 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
   line-height: 1.1;
 }
 .hero-stats span {
-  font-size: 0.8rem;
-  font-weight: 800;
+  font-family: var(--label);
+  font-size: 0.82rem;
+  font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-soft);
@@ -148,10 +164,11 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
 /* ---- buttons ---- */
 .btn {
   display: inline-block;
-  font-family: var(--body);
-  font-weight: 800;
+  font-family: var(--label);
+  font-weight: 700;
   font-size: 0.92rem;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   color: var(--ink);
   background: transparent;
   border: 1px solid var(--ink);
@@ -168,9 +185,10 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
 /* ---- small-caps tags (replace sticker badges) ---- */
 .tag {
   display: inline-block;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
+  font-family: var(--label);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--leaf-deep);
   margin-right: 1rem;
@@ -182,10 +200,10 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
 /* ---- hairline list rows (city index, freshly checked) ---- */
 .region-group { margin-bottom: 2.75rem; }
 .region-group > h3 {
-  font-family: var(--body);
-  font-size: 0.85rem;
-  font-weight: 800;
-  letter-spacing: 0.22em;
+  font-family: var(--label);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--leaf);
   border-bottom: 1px solid var(--ink);
@@ -224,9 +242,10 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
 }
 .index-main p.summary { margin: 0.5rem 0 0; font-size: 0.98rem; max-width: 580px; }
 .index-status {
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
+  font-family: var(--label);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--leaf-deep);
   white-space: nowrap;
@@ -287,7 +306,7 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
 
 /* ---- progress (tried-it) ---- */
 .progress-wrap { margin: 1.75rem 0 0.5rem; max-width: 560px; }
-.progress-label { font-weight: 800; font-size: 0.85rem; letter-spacing: 0.05em; color: var(--ink-soft); margin-bottom: 0.6rem; }
+.progress-label { font-family: var(--label); font-weight: 700; font-size: 0.88rem; letter-spacing: 0.08em; color: var(--ink-soft); margin-bottom: 0.6rem; }
 .progress-bar { background: var(--line); border: none; border-radius: 0; height: 3px; overflow: hidden; }
 .progress-fill { background: var(--leaf-deep); height: 100%; border-radius: 0; transition: width 0.5s ease; }
 
@@ -313,9 +332,10 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
   border-bottom: 1px solid var(--line-soft);
 }
 .facts dt {
-  font-size: 0.76rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
+  font-family: var(--label);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   color: var(--ink-soft);
   text-transform: uppercase;
   padding-top: 0.15rem;
@@ -388,12 +408,14 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
 /* ---- city finder: search + region filters ---- */
 .city-tools { display: flex; flex-wrap: wrap; gap: 0.8rem 1.5rem; align-items: flex-end; margin: 0 0 1.75rem; }
 #city-search {
-  font: inherit;
-  font-weight: 600;
+  font-family: var(--label);
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  font-weight: 700;
   color: var(--ink);
   background: transparent;
   border: none;
-  border-bottom: 1px solid var(--ink);
+  border-bottom: 1px dashed var(--ink);
   border-radius: 0;
   padding: 0.55rem 0.1rem;
   min-width: 240px;
@@ -404,9 +426,11 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
 #city-search:focus { outline: none; border-bottom-color: var(--leaf); }
 .region-chips { display: flex; flex-wrap: wrap; gap: 0.35rem 1.1rem; }
 .chip {
-  font: inherit;
-  font-weight: 800;
-  font-size: 0.85rem;
+  font-family: var(--label);
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   background: transparent;
   color: var(--ink-soft);
   border: none;
@@ -446,9 +470,10 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
 }
 .region-headlines { color: var(--ink-soft); font-weight: 700; margin: 0.55rem 0 0.9rem; font-size: 0.98rem; }
 .region-link {
-  font-size: 0.8rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
+  font-family: var(--label);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--leaf-deep);
 }
@@ -466,7 +491,7 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
 .search-hit:hover { text-decoration: none; }
 .search-hit:hover .search-hit-name { color: var(--leaf-deep); text-decoration: underline; text-underline-offset: 3px; }
 .search-hit-name { font-family: var(--display); font-weight: 600; font-size: 1.15rem; }
-.search-hit-meta { color: var(--ink-soft); font-size: 0.88rem; font-weight: 700; padding-top: 0.25rem; white-space: nowrap; }
+.search-hit-meta { font-family: var(--label); color: var(--ink-soft); font-size: 0.9rem; font-weight: 700; padding-top: 0.25rem; white-space: nowrap; }
 
 /* ---- hub pages: view toggle, map, new-this-month ---- */
 .hub-new {
@@ -480,9 +505,9 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
 .view-toggle { display: flex; gap: 0.6rem; margin: 0 0 1.5rem; }
 .view-toggle .btn.active { background: var(--ink); border-color: var(--ink); color: var(--paper); }
 #region-map {
-  height: 430px;
-  border: 1px solid var(--line);
-  margin: 0 0 1.75rem;
+  height: 460px;
+  border: 2px solid var(--ink);
+  margin: 0 0 2.5rem;
   z-index: 1;
   background: var(--paper-2);
 }
@@ -491,9 +516,9 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
 
 /* ---- homepage world map (same Leaflet treatment as the region hubs) ---- */
 #world-map {
-  height: 420px;
-  border: 1px solid var(--line);
-  margin: 0 0 1.75rem;
+  height: 460px;
+  border: 2px solid var(--ink);
+  margin: 0 0 2.5rem;
   z-index: 1;
   background: var(--paper-2);
 }
@@ -502,14 +527,61 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
 
 /* ---- city page map (same Leaflet treatment as the region hubs) ---- */
 #city-map {
-  height: 380px;
-  border: 1px solid var(--line);
-  margin: 0 0 1.75rem;
+  height: 420px;
+  border: 2px solid var(--ink);
+  margin: 0 0 2.5rem;
   z-index: 1;
   background: var(--paper-2);
 }
 #city-map .leaflet-popup-content { font-family: var(--body); font-size: 0.95rem; line-height: 1.5; }
 #city-map .leaflet-popup-content a { color: var(--leaf-deep); }
+
+/* ---- passport: map caption, city stamp ---- */
+.map-caption {
+  font-family: var(--label);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: -1.75rem 0 2.5rem;
+}
+.city-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+.city-head .hero { margin-bottom: 0.5rem; }
+.stamp {
+  width: 132px;
+  height: 132px;
+  flex: none;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  color: var(--accent);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--label);
+  text-transform: uppercase;
+  text-align: center;
+  transform: rotate(-8deg);
+  opacity: 0.92;
+  position: relative;
+  mix-blend-mode: multiply;
+}
+.stamp::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+}
+.stamp .stamp-top { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.18em; }
+.stamp .stamp-mid { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.1em; margin: 0.15rem 0; }
+.stamp .stamp-bot { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.18em; }
 .vp-pin { background: transparent; border: none; }
 .vp-pin span {
   display: block;
@@ -523,6 +595,9 @@ h1.hero em { font-style: italic; color: var(--leaf-deep); }
 .region-chips a.chip:hover { text-decoration: none; }
 
 @media (max-width: 640px) {
+  .hero-stamp { display: none; }
+  .city-head { flex-direction: column; }
+  .stamp { width: 112px; height: 112px; margin: 0.25rem 0 0.75rem; }
   .site-head { padding: 0.8rem 1rem; }
   .site-head nav { gap: 1rem; font-size: 0.85rem; }
   .hero-wrap { padding: 2.25rem 0 2rem; }
