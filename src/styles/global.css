@@ -589,12 +589,10 @@ main.explorer-main { max-width: none; margin: 0; padding: 0; }
 .explorer-panel #city-search::placeholder { color: rgba(250, 246, 236, 0.6); }
 .panel-chips {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
   padding: 0 1.25rem 0.75rem;
-  overflow-x: auto;
-  scrollbar-width: none;
 }
-.panel-chips::-webkit-scrollbar { display: none; }
 .chip {
   flex: none;
   font: inherit;
@@ -632,7 +630,7 @@ main.explorer-main { max-width: none; margin: 0; padding: 0; }
 .panel-foot a { color: rgba(250, 246, 236, 0.8); font-size: 0.85rem; font-weight: 700; text-align: center; }
 
 /* city page: map banner with the title floating on it */
-.city-map-banner { position: relative; height: 420px; margin: -2.5rem -1.5rem 2rem; }
+.city-map-banner { position: relative; height: 420px; width: 100vw; margin: -2.5rem calc(-50vw + 50%) 2rem; }
 .city-map-banner #city-map { height: 100%; border: none; margin: 0; }
 .city-title-card {
   position: absolute;
