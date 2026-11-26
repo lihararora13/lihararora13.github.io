@@ -87,8 +87,9 @@ const vpData = {
 
       // ---- veggie rain (konami code easter egg) ----
       const VEGGIES = ['🥑','🥦','🌮','🍕','🥕','🍄','🥬','🍓','🫘','🌽','🍋','🥥'];
-      function veggieRain() {
-        for (let i = 0; i < 70; i++) {
+      function veggieRain(n) {
+        const count = n || 70;
+        for (let i = 0; i < count; i++) {
           const s = document.createElement('span');
           s.className = 'veg-drop';
           s.textContent = VEGGIES[Math.floor(Math.random() * VEGGIES.length)];
@@ -106,6 +107,16 @@ const vpData = {
         pos = (e.key === seq[pos]) ? pos + 1 : (e.key === seq[0] ? 1 : 0);
         if (pos === seq.length) { pos = 0; veggieRain(); }
       });
+
+      // ---- first-visit sprinkle (once per device) ----
+      try {
+        if (!localStorage.getItem('vp-seen-v1')) {
+          localStorage.setItem('vp-seen-v1', '1');
+          if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            setTimeout(() => veggieRain(25), 1000);
+          }
+        }
+      } catch (e) { /* storage unavailable: no sprinkle */ }
     </script>
   </body>
 </html>
