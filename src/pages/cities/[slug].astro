@@ -24,21 +24,21 @@ const priceMarks = (n) => '$'.repeat(n);
 ---
 
 <Base title={`${city.data.title} vegan guide`} description={city.data.summary}>
-  <p class="eyebrow">City guide · {city.data.country}</p>
-  <h1 class="hero">{city.data.title}</h1>
-  <p class="lede">{city.data.summary}</p>
-
   {city.data.status === 'live' ? (
     <>
+      <div class="city-map-banner">
+        <div id="city-map"></div>
+        <div class="city-title-card">
+          <p class="card-eyebrow">City guide · {city.data.country}</p>
+          <h1>{city.data.title}</h1>
+          <p class="card-meta">{targets.length} spots ranked</p>
+        </div>
+      </div>
+      <p class="lede">{city.data.summary}</p>
       <div class="progress-wrap" data-targets={targets.map((t) => t.id.replace(/\.mdx?$/, '')).join(',')}>
         <p class="progress-label" id="progress-label"></p>
         <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width: 0%"></div></div>
       </div>
-      <div class="section-head">
-        <h2>On the map</h2>
-        <p class="sub">Every spot in this guide, pinned.</p>
-      </div>
-      <div id="city-map"></div>
       <script
         type="application/json"
         id="city-pins"
@@ -84,6 +84,9 @@ const priceMarks = (n) => '$'.repeat(n);
     </>
   ) : (
     <>
+      <p class="eyebrow">City guide · {city.data.country}</p>
+      <h1 class="hero">{city.data.title}</h1>
+      <p class="lede">{city.data.summary}</p>
       <div class="note-card" style="margin-top: 1.5rem;">
         {city.data.title} is on the list, but we're still tasting our way through it.
         Good things take time (and many meals).
@@ -128,9 +131,8 @@ const priceMarks = (n) => '$'.repeat(n);
     if (mapEl) {
       const pins = JSON.parse(document.getElementById('city-pins').textContent || '[]');
       if (!pins.length) {
-        mapEl.hidden = true;
-        const head = mapEl.previousElementSibling;
-        if (head) head.hidden = true;
+        const banner = mapEl.closest('.city-map-banner');
+        if (banner) banner.hidden = true;
       } else {
         let leafletLoading = null;
         function loadLeaflet() {

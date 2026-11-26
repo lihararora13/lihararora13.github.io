@@ -1,103 +1,65 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
-import { REGIONS, regionOf, regionSlug } from '../lib/regions';
+import { REGIONS, regionOf } from '../lib/regions';
 
 const cities = await getCollection('cities');
 const live = cities.filter((c) => c.data.status === 'live');
-const soon = cities.filter((c) => c.data.status === 'soon');
 const spots = await getCollection('restaurants');
 const slugOf = (e) => e.id.replace(/\.mdx?$/, '');
 
-// Most recent verification per city, used to pick headline cities per region.
-const latestByCity = new Map<string, number>();
+const spotsByCity = new Map<string, number>();
 for (const s of spots) {
-  const t = s.data.lastVerified.getTime();
-  if (!latestByCity.has(s.data.city) || t > (latestByCity.get(s.data.city) as number)) {
-    latestByCity.set(s.data.city, t);
-  }
+  spotsByCity.set(s.data.city, (spotsByCity.get(s.data.city) ?? 0) + 1);
 }
-const byRegion = (region: string) =>
-  live
-    .filter((c) => regionOf(c.data.country) === region)
-    .sort(
-      (a, b) =>
-        (latestByCity.get(slugOf(b)) ?? 0) - (latestByCity.get(slugOf(a)) ?? 0)
-    );
+const sorted = [...live].sort((a, b) => a.data.title.localeCompare(b.data.title));
 ---
 
-<Base title="The best vegan food in every city">
-  <div class="hero-wrap">
-    <p class="eyebrow">A field guide to plant-based eating</p>
-    <h1 class="hero">
-      The best <em>vegan food</em><br />
-      in every city.
-    </h1>
-    <p class="lede">
-      Short lists, strong opinions. We hunt down the plant-based spots actually worth
-      your time, rank them, and re-check them every month. No ads, no pay-to-play,
-      no 400-entry directory of places that once had a veggie burger.
-    </p>
-    <div class="hero-stats">
-      <div><strong>{live.length}</strong><span>City guides</span></div>
-      <div><strong>{spots.length}</strong><span>Spots ranked</span></div>
-      <div><strong>Monthly</strong><span>Re-checked</span></div>
-    </div>
-    <div class="btn-row">
-      <a class="btn solid" href="#regions">Browse by region</a>
-      <a class="btn" href="/methodology">How we pick</a>
-    </div>
-  </div>
-
-  <div class="section-head">
-    <h2>The world map</h2>
-    <p class="sub">Every city we've ranked, pinned. Tap a dot to open its guide.</p>
-  </div>
-  <div id="world-map"></div>
-
-  <div class="section-head" id="regions">
-    <h2>Browse by region</h2>
-    <p class="sub">{live.length} ranked guides across five regions. Pick a region, or search for a city.</p>
-  </div>
-  <div class="city-tools">
-    <input id="city-search" type="search" placeholder="Search cities… (e.g. paris, texas)" aria-label="Search cities" autocomplete="off" />
-  </div>
-  <div id="search-results" class="search-results" hidden></div>
-  <div class="region-cards">
-    {REGIONS.map((region) => {
-      const items = byRegion(region);
-      const headlines = items.slice(0, 3);
-      return (
-        <a class="region-card" href={`/regions/${regionSlug(region)}/`}>
-          <p class="eyebrow">{region}</p>
-          <p class="region-count"><strong>{items.length}</strong> {items.length === 1 ? 'guide' : 'guides'}</p>
-          <p class="region-headlines">
-            {headlines.map((c) => c.data.title).join(' · ')}
-            {soon.some((c) => regionOf(c.data.country) === region) && ' · more coming soon'}
-          </p>
-          <span class="region-link">Explore {region} →</span>
-        </a>
-      );
-    })}
-  </div>
-
-  <hr class="divider" />
-  <div class="note-card">
-    This is a short list, not a phone book. If a city has twelve spots worth your
-    time, the list has twelve entries. If it has three, it has three.
+<Base title="The best vegan food in every city" fullBleed>
+  <div class="explorer">
+    <div id="world-map" class="explorer-map"></div>
+    <aside class="explorer-panel" aria-label="Find a city">
+      <div class="panel-head">
+        <p class="panel-count">{live.length} cities · {spots.length} spots</p>
+        <input id="city-search" type="search" placeholder="Search a city…" aria-label="Search cities" autocomplete="off" />
+      </div>
+      <div class="panel-chips" role="group" aria-label="Filter by region">
+        <button class="chip active" data-region="All" type="button">All</button>
+        {REGIONS.map((r) => (
+          <button class="chip" data-region={r} type="button">{r}</button>
+        ))}
+      </div>
+      <nav class="panel-list" id="panel-list">
+        {sorted.map((c) => (
+          <a
+            class="panel-row"
+            href={`/cities/${slugOf(c)}/`}
+            data-name={(c.data.title + ' ' + c.data.country).toLowerCase()}
+            data-region={regionOf(c.data.country)}
+          >
+            <span class="panel-row-name">{c.data.title}</span>
+            <span class="panel-row-meta">{c.data.country} · {spotsByCity.get(slugOf(c)) ?? 0} spots</span>
+          </a>
+        ))}
+      </nav>
+      <div class="panel-foot">
+        <button class="btn solid" id="surprise-me" type="button">Surprise me</button>
+        <a href="/methodology">How we pick →</a>
+      </div>
+    </aside>
   </div>
 
   <script>
     const data = JSON.parse(document.getElementById('vp-data').textContent || '{}');
+    const allCities = (data.cities || []).filter(
+      (c) => c.status === 'live' && c.lat != null && c.lng != null
+    );
 
     // ---- world map (Leaflet, lazy-loaded like the region hubs) ----
-    // Map code first and independent of window.VP: nothing above it may
-    // throw and stop it from running.
     const worldMapEl = document.getElementById('world-map');
+    let map = null;
+    let markers = [];
     if (worldMapEl) {
-      const pins = (data.cities || []).filter(
-        (c) => c.status === 'live' && c.lat != null && c.lng != null
-      );
       let leafletLoading = null;
       function loadLeaflet() {
         if (window.L) return Promise.resolve();
@@ -113,13 +75,14 @@ const byRegion = (region: string) =>
         return leafletLoading;
       }
       loadLeaflet().then(() => {
-        const map = window.L.map('world-map', { scrollWheelZoom: false });
+        map = window.L.map('world-map', { scrollWheelZoom: true, zoomControl: false });
+        window.L.control.zoom({ position: 'bottomright' }).addTo(map);
         window.L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
           maxZoom: 18,
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }).addTo(map);
         const bounds = [];
-        pins.forEach((c) => {
+        markers = allCities.map((c) => {
           const marker = window.L.marker([c.lat, c.lng], {
             icon: window.L.divIcon({
               className: 'vp-pin',
@@ -131,40 +94,55 @@ const byRegion = (region: string) =>
           marker.bindPopup(
             '<a href="/cities/' + c.slug + '/"><strong>' + c.title + '</strong></a><br>' + c.country
           );
+          marker._region = c.region;
           bounds.push([c.lat, c.lng]);
+          return marker;
         });
         if (bounds.length) map.fitBounds(bounds, { padding: [28, 28] });
         else map.setView([20, 0], 2);
       }).catch(() => {
-        worldMapEl.innerHTML = '<p class="no-results">The map could not load. The region list below has every guide.</p>';
+        worldMapEl.innerHTML = '<p class="no-results">The map could not load. The city list in the panel has every guide.</p>';
       });
     }
 
-    // City search: live results jump straight to the guide.
+    // ---- panel: search + region chips filter the list and the pins ----
     const citySearch = document.getElementById('city-search');
-    const searchResults = document.getElementById('search-results');
-    const allCities = (data.cities || []).filter((c) => c.status === 'live');
+    const rows = Array.from(document.querySelectorAll('.panel-row'));
+    let activeRegion = 'All';
 
-    function renderSearch() {
+    function applyFilters() {
       const q = (citySearch.value || '').trim().toLowerCase();
-      if (!q) { searchResults.hidden = true; searchResults.innerHTML = ''; return; }
-      const hits = allCities
-        .filter((c) => (c.title + ' ' + c.country).toLowerCase().includes(q))
-        .slice(0, 8);
-      if (!hits.length) {
-        searchResults.hidden = false;
-        searchResults.innerHTML = '<p class="no-results">No city matches that search. Try another craving?</p>';
-        return;
+      rows.forEach((row) => {
+        const okQ = !q || row.dataset.name.includes(q);
+        const okR = activeRegion === 'All' || row.dataset.region === activeRegion;
+        row.style.display = okQ && okR ? '' : 'none';
+      });
+      if (map) {
+        markers.forEach((m) => {
+          const show = activeRegion === 'All' || m._region === activeRegion;
+          if (show && !map.hasLayer(m)) m.addTo(map);
+          if (!show && map.hasLayer(m)) map.removeLayer(m);
+        });
       }
-      searchResults.hidden = false;
-      searchResults.innerHTML = hits.map((c) =>
-        '<a class="search-hit" href="/cities/' + c.slug + '/">' +
-        '<span class="search-hit-name">' + c.title + '</span>' +
-        '<span class="search-hit-meta">' + c.country + ' · ' + c.region + '</span>' +
-        '</a>'
-      ).join('');
     }
 
-    if (citySearch) citySearch.addEventListener('input', renderSearch);
+    if (citySearch) citySearch.addEventListener('input', applyFilters);
+    document.querySelectorAll('.panel-chips .chip').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.panel-chips .chip').forEach((c) => c.classList.remove('active'));
+        chip.classList.add('active');
+        activeRegion = chip.dataset.region;
+        applyFilters();
+      });
+    });
+
+    // ---- surprise me: jump to a random guide ----
+    const surprise = document.getElementById('surprise-me');
+    if (surprise) {
+      surprise.addEventListener('click', () => {
+        const c = allCities[Math.floor(Math.random() * allCities.length)];
+        if (c) window.location.href = '/cities/' + c.slug + '/';
+      });
+    }
   </script>
 </Base>
