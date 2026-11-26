@@ -44,6 +44,7 @@ export function regionOf(country: string): Region {
     return 'Europe';
   }
   if (['South Africa', 'Israel', 'United Arab Emirates', 'Kenya', 'Ghana', 'Nigeria', 'Egypt', 'Morocco', 'Lebanon', 'Jordan', 'Qatar', 'Ethiopia', 'Tunisia', 'Saudi Arabia', 'Oman', 'Turkey'].includes(country)) return 'Africa & Middle East';
+  if (['India'].includes(country)) return 'Asia-Pacific';
   return 'Asia-Pacific';
 }
 
