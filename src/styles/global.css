@@ -606,7 +606,7 @@ main.explorer-main { max-width: none; margin: 0; padding: 0; }
   cursor: pointer;
 }
 .chip.active { background: var(--gold); border-color: var(--gold); color: var(--ink); }
-.panel-list { flex: 1; overflow-y: auto; padding: 0.25rem 0; }
+.panel-list { flex: 1; overflow-y: auto; padding: 0.25rem 0; min-height: 0; }
 .panel-row {
   display: flex;
   justify-content: space-between;
@@ -661,15 +661,18 @@ main.explorer-main { max-width: none; margin: 0; padding: 0; }
 .card-meta { margin: 0; color: rgba(250, 246, 236, 0.75); font-weight: 700; font-size: 0.95rem; }
 
 @media (max-width: 640px) {
-  .explorer { min-height: 480px; }
+  /* stacked on mobile: list on top, map at the bottom */
+  .explorer { display: flex; flex-direction: column; height: auto; min-height: 0; }
+  .explorer #world-map { order: 2; height: 380px; }
   .explorer-panel {
-    left: 0.75rem;
-    right: 0.75rem;
-    top: auto;
-    bottom: 0.75rem;
+    position: static;
+    order: 1;
     width: auto;
-    max-height: 55%;
+    max-height: none;
+    border-radius: 0;
+    box-shadow: none;
   }
+  .panel-list { max-height: 45vh; }
   .city-title-card { left: 1rem; bottom: 1rem; right: 1rem; max-width: none; }
   .city-title-card h1 { font-size: 2rem; }
 }
