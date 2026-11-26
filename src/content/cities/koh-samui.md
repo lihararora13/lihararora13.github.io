@@ -1,0 +1,11 @@
+---
+title: "Koh Samui"
+country: "Thailand"
+lat: 9.45982
+lng: 99.98419
+status: "live"
+summary: "Koh Samui is the strongest all-vegan island in this batch: 8 verified-open picks, all eight fully vegan, led by the top-rated fine dining room Halapua by Kapuhala above Chaweng Noi, the 120 THB all-you-can-eat buffet at Vegan Khunnay in Mae Nam, the Lamai pair of Lamai Veggie and Pure Vegan Heaven, the Bo Phut pair of Penne and Noodles Now, the quiet south-west cafe MY Vegan Food Shop & Cafe in Taling Ngam, and the Buddhist buffet Tamachat Vegan Food at the Big Buddha."
+---
+Koh Samui is an island, not a city, and its vegan scene is spread around the ring road: Bo Phut and Fisherman's Village in the north, Mae Nam on the north coast, Lamai on the east coast, Chaweng Noi in the hills above Chaweng, Taling Ngam in the quiet south-west, and the Big Buddha in the north-east. That spread is the point. Bo Phut is the easiest area for a vegan crawl, with Penne and Noodles Now a short walk apart, while Lamai pairs its two vegan rooms with the beach and the morning market, and the north coast has the cheapest eating on the island. Every pick in this guide is fully vegan, which makes Koh Samui the strongest all-vegan island in this batch alongside Phuket.
+
+All eight picks are verified open as of November 2026, all eight fully vegan. Start with the set menu at Halapua, a 120 THB buffet plate at Vegan Khunnay, the daily changing dishes at Lamai Veggie, a curry with mock meats at Penne, the mushroom larb at Pure Vegan Heaven, a noodle bowl at Noodles Now, a pizza at MY Vegan Food Shop & Cafe, and a buffet plate at Tamachat. A note on the traps: Halapua needs a reservation and its hours disagree across sources, so confirm directly; MY Vegan is open Monday to Friday only, 9:00am to 3:30pm, and is cash only; Tamachat has no street address, it sits inside the Big Buddha temple grounds to the right of the steps; and three pins are neighbourhood or district level rather than street-level, Halapua in Chaweng Noi, MY Vegan in Taling Ngam and Tamachat at the Big Buddha. And a warning: a listing called Thai Food Vegetarian or Vegan was dropped from this guide after HappyCow flagged it as maybe closed, so do not trust older lists that still show it.

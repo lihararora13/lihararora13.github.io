@@ -30,7 +30,7 @@ export function regionFromSlug(slug: string): Region | undefined {
 
 export function regionOf(country: string): Region {
   if (['United States', 'Canada', 'Mexico'].includes(country)) return 'North America';
-  if (['Brazil', 'Argentina', 'Chile', 'Peru', 'Colombia', 'Ecuador', 'Uruguay'].includes(country)) return 'Latin America';
+  if (['Brazil', 'Argentina', 'Chile', 'Peru', 'Colombia', 'Ecuador', 'Uruguay', 'Guatemala', 'Costa Rica', 'Panama', 'Jamaica'].includes(country)) return 'Latin America';
   if (
     [
       'United Kingdom', 'Germany', 'France', 'Netherlands', 'Spain',
@@ -38,11 +38,12 @@ export function regionOf(country: string): Region {
       'Czech Republic', 'Austria', 'Italy', 'Greece', 'Hungary',
       'Belgium', 'Poland', 'Switzerland', 'Finland', 'Iceland',
       'Estonia', 'Latvia', 'Lithuania', 'Slovenia', 'Croatia', 'Serbia',
+      'Bulgaria', 'Romania', 'Norway',
     ].includes(country)
   ) {
     return 'Europe';
   }
-  if (['South Africa', 'Israel', 'United Arab Emirates', 'Kenya', 'Ghana', 'Nigeria', 'Egypt', 'Morocco', 'Lebanon', 'Jordan', 'Qatar'].includes(country)) return 'Africa & Middle East';
+  if (['South Africa', 'Israel', 'United Arab Emirates', 'Kenya', 'Ghana', 'Nigeria', 'Egypt', 'Morocco', 'Lebanon', 'Jordan', 'Qatar', 'Ethiopia', 'Tunisia', 'Saudi Arabia', 'Oman', 'Turkey'].includes(country)) return 'Africa & Middle East';
   return 'Asia-Pacific';
 }
 
